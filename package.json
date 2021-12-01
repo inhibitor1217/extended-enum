@@ -1,6 +1,6 @@
 {
   "name": "extended-enum",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An extension to grant java-like powers to typescript enums",
   "main": "dist/index.js",
   "author": "inhibitor <inhibitor@kaist.ac.kr>",
@@ -8,6 +8,7 @@
   "scripts": {
     "lint": "npx eslint .",
     "typecheck": "npx tsc --noEmit",
+    "clean": "rm -rf dist/",
     "build": "npx tsc -p tsconfig.build.json",
     "prepare": "husky install",
     "test": "npx jest"
