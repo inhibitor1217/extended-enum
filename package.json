@@ -46,10 +46,7 @@
     "yarn.lock"
   ],
   "lint-staged": {
-    "src/*.{js,ts}": [
-      "eslint --cache",
-      "jest"
-    ],
+    "src/*.{js,ts}": "eslint --cache",
     "src/**/*.ts?(x)": "tsc --noEmit"
   }
 }
