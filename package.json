@@ -8,7 +8,8 @@
   "scripts": {
     "lint": "npx eslint .",
     "typecheck": "npx tsc --noEmit",
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.0.0",
@@ -17,6 +18,12 @@
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-airbnb-typescript": "^16.1.0",
     "eslint-plugin-import": "^2.25.2",
+    "husky": ">=6",
+    "lint-staged": ">=10",
     "typescript": "^4.5.2"
+  },
+  "lint-staged": {
+    "*.{js,ts}": "eslint --cache",
+    "**/*.ts?(x)": "tsc --noEmit"
   }
 }
