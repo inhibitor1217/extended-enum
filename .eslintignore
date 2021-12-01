@@ -2,5 +2,6 @@ coverage/
 dist/
 node_modules/
 .eslintrc.js
+.releaserc.js
 babel.config.js
 jest.config.ts
