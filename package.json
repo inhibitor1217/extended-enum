@@ -24,6 +24,7 @@
     "@semantic-release/npm": "^8.0.3",
     "@semantic-release/release-notes-generator": "^10.0.3",
     "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "babel-jest": "^27.4.2",
@@ -49,5 +50,8 @@
   "lint-staged": {
     "src/*.{js,ts}": "eslint --cache",
     "src/**/*.ts?(x)": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fxts/core": "^0.2.2"
   }
 }
