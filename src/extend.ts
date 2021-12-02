@@ -65,7 +65,7 @@ const extend = <
     }
 
     private static valueOf(key: Keys<E>): V {
-      // NOTE: this should be the only place where unsafe type link E and V
+      // NOTE: this should be the only place where unsafe type link between E and V is applied
       return unsafeCast<E[Keys<E>], V>(enumObj[key]);
     }
 
