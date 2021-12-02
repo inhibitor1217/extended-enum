@@ -1,3 +1,5 @@
+export { default as extend } from './extend';
+
 export type {
   Enum,
   Keys,

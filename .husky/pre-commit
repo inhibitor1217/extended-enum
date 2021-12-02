@@ -3,3 +3,4 @@
 
 npx lint-staged
 yarn test
+yarn typecheck
