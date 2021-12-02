@@ -1,6 +1,6 @@
 {
   "name": "extended-enum",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An extension to grant java-like powers to typescript enums",
   "main": "dist/index.js",
   "author": "inhibitor <inhibitor@kaist.ac.kr>",
