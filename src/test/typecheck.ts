@@ -1,9 +1,9 @@
 export type Pass = true;
 export type Fail = false;
 
-export type IsEqual<T1, T2> = T1 extends T2
-  ? (T2 extends T1 ? Pass : Fail)
-  : Fail;
+export type IsEqual<T1, T2> =
+  (<T>() => T extends T1 ? 1 : 2) extends
+  (<T>() => T extends T2 ? 1 : 2) ? Pass : Fail;
 
 export declare function equal<
   Actual,
