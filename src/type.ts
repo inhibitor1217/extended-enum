@@ -1,4 +1,4 @@
-type Primitive = string | number;
+export type Primitive = string | number;
 
 export type Enum = Record<string, Primitive>;
 
@@ -12,14 +12,15 @@ export interface ExtendedEnum<V extends Primitive> {
   valueOf(): Primitive;
 
   toString(): string;
+  toJSON(): Primitive;
 }
 
 export interface ExtendedEnumStatic<E extends Enum, V extends Primitive>
   extends Iterable<ExtendedEnum<V>> {
   of(value: V): ExtendedEnum<V>;
 
-  from(value: string | number): ExtendedEnum<V> | undefined;
-  from(value: string | number, fallback: V): ExtendedEnum<V>;
+  from(value: string | number | undefined): ExtendedEnum<V> | undefined;
+  from(value: string | number | undefined, fallback: V): ExtendedEnum<V>;
 
   keys(): Iterable<Keys<E>>;
   values(): Iterable<ExtendedEnum<V>>;
