@@ -5,6 +5,9 @@
   ],
   "exclude": [
     "./**/*.spec.ts",
+    "./**/*.ts-spec.ts",
     "./**/*.test.ts",
+    "./**/*.ts-test.ts",
+    "./**/test/**/*",
   ]
 }
