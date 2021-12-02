@@ -1,4 +1,8 @@
-export { default as extend } from './extend';
+import extend from './extend';
+
+export {
+  extend,
+};
 
 export type {
   Enum,

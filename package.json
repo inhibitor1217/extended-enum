@@ -1,15 +1,25 @@
 {
   "name": "extended-enum",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "version": "0.0.3",
   "description": "An extension to grant java-like powers to typescript enums",
-  "main": "dist/index.js",
   "author": "inhibitor <inhibitor@kaist.ac.kr>",
   "license": "MIT",
   "scripts": {
     "lint": "npx eslint .",
     "typecheck": "npx tsc -p tsconfig.check.json",
     "clean": "rm -rf dist/",
-    "build": "npx tsc -p tsconfig.build.json",
+    "compile:cjs": "npx tsc -p tsconfig.build-cjs.json",
+    "compile:esm": "npx tsc -p tsconfig.build-esm.json",
+    "post-compile": "scripts/post-compile.sh",
+    "build": "yarn clean && yarn compile:cjs && yarn compile:esm && yarn post-compile",
     "prepare": "husky install",
     "test": "npx jest"
   },
