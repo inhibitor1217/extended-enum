@@ -7,6 +7,7 @@ import {
 import type {
   Enum,
   ExtendedEnum,
+  ExtendedEnumIs,
   ExtendedEnumStatic,
   Keys,
   Primitive,
@@ -22,10 +23,18 @@ const extend = <
 >(enumObj: E): ExtendedEnumStatic<E, V> => class EnumClazz implements ExtendedEnum<V> {
     private static readonly instances: Map<V, ExtendedEnum<V>> = new Map();
 
+    readonly is: ExtendedEnumIs<V>;
+
     private readonly value: V;
 
     private constructor(value: V) {
       this.value = value;
+
+      this.is = Object.assign(
+        this.eq.bind(this),
+        { not: this.neq.bind(this) },
+      );
+
       Object.freeze(this);
     }
 
@@ -85,15 +94,16 @@ const extend = <
       return this.values()[Symbol.iterator]();
     }
 
-    is(other: V): boolean;
-    is(other: Primitive): boolean;
-    is(other: ExtendedEnum<V>): boolean;
-    is(other: V | Primitive | ExtendedEnum<V>): boolean {
+    private eq(other: V | Primitive | ExtendedEnum<V>): boolean {
       if (other instanceof EnumClazz) {
         return (other as ExtendedEnum<V>).is(this.value);
       }
 
       return this.value === other;
+    }
+
+    private neq(other: V | Primitive | ExtendedEnum<V>): boolean {
+      return !this.eq(other);
     }
 
     valueOf(): Primitive {
