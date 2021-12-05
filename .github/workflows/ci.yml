@@ -1,0 +1,19 @@
+name: ci
+on: [pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - name: install deps
+        run: yarn
+      - name: run lint
+        run: yarn lint
+      - name: run typecheck
+        run: yarn typecheck
+      - name: run test
+        run: yarn test
