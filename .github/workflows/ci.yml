@@ -17,3 +17,8 @@ jobs:
         run: yarn typecheck
       - name: run test
         run: yarn test
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          verbose: true
