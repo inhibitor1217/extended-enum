@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: yarn
+    schedule:
+      interval: daily
+    target-branch: dev
+    reviewers:
+      - inhibitor1217
+    commit-message:
+      prefix: "deps: "
+    labels:
+      - dependency
