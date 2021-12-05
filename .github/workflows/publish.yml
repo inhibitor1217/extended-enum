@@ -1,7 +1,8 @@
 name: publish
 on:
   release:
-    - created
+    types:
+      - created
 jobs:
   build_then_publish:
     steps:
