@@ -1,6 +1,18 @@
 <h1 align="center">extended-enum</h1>
 <h4 align="center">An extension for TypeScript enums to grant object-oriented powers</h4>
 
+## Installation
+
+Install via `npm` or `yarn`:
+
+```sh
+# NPM
+npm i extended-enum@latest
+
+# Yarn
+yarn add extended-enum@latest
+```
+
 ## How to use it?
 
 `extended-enum` exposes a utility function named `extend`. Simply wrap an enum with `extend`, then you are ready to go!
