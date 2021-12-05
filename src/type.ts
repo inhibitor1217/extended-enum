@@ -4,10 +4,18 @@ export type Enum = Record<string, Primitive>;
 
 export type Keys<E extends Enum> = keyof E;
 
+type ExtendedEnumEqualsMatcher<V extends Primitive> = {
+  (value: V): boolean;
+  (value: Primitive): boolean;
+  (value: ExtendedEnum<V>): boolean;
+};
+
+export type ExtendedEnumIs<V extends Primitive> = ExtendedEnumEqualsMatcher<V> & {
+  readonly not: ExtendedEnumEqualsMatcher<V>;
+};
+
 export interface ExtendedEnum<V extends Primitive> {
-  is(value: V): boolean;
-  is(value: Primitive): boolean;
-  is(value: ExtendedEnum<V>): boolean;
+  readonly is: ExtendedEnumIs<V>;
 
   valueOf(): Primitive;
 
