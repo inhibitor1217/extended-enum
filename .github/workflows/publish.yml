@@ -1,0 +1,20 @@
+name: publish
+on:
+  release:
+    - created
+jobs:
+  build_then_publish:
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - name: install deps
+        run: yarn
+      - name: build project
+        run: yarn build
+      - name: publish project on npm
+        run: yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
