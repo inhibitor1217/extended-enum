@@ -14,8 +14,6 @@ import type {
 import { unsafeCast } from './util/cast';
 import { toIterable } from './util/iterable';
 
-const isStringKey = (key: string) => Number.isNaN(parseInt(key, 10));
-
 const KIND = Symbol('ExtendedEnum');
 
 // eslint-disable-next-line no-underscore-dangle
@@ -50,6 +48,8 @@ const extend = <
   V extends Primitive,
 >(enumObj: E): ExtendedEnumStatic<E, V> => {
   const instances = new Map<V, ExtendedEnum<V>>();
+
+  const isStringKey = (key: string) => Number.isNaN(parseInt(key, 10));
 
   const keys = (): Iterable<Keys<E>> => Object.getOwnPropertyNames(enumObj).filter(isStringKey);
 
