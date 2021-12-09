@@ -10,7 +10,7 @@ type ExtendedEnumEqualsMatcher<V extends Primitive> = {
   (value: ExtendedEnum<V>): boolean;
 };
 
-export type ExtendedEnumIs<V extends Primitive> = ExtendedEnumEqualsMatcher<V> & {
+type ExtendedEnumIs<V extends Primitive> = ExtendedEnumEqualsMatcher<V> & {
   readonly not: ExtendedEnumEqualsMatcher<V>;
 };
 
