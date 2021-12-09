@@ -7,7 +7,6 @@ import {
 import type {
   Enum,
   ExtendedEnum,
-  ExtendedEnumIs,
   ExtendedEnumStatic,
   Keys,
   Primitive,
@@ -17,106 +16,91 @@ import { toIterable } from './util/iterable';
 
 const isStringKey = (key: string) => Number.isNaN(parseInt(key, 10));
 
+const KIND = Symbol('ExtendedEnum');
+
+// eslint-disable-next-line no-underscore-dangle
+const isInstance = (value: any): value is ExtendedEnum<Primitive> => value.__kind === KIND;
+
+const instance = <V extends Primitive>(value: V): ExtendedEnum<V> => {
+  const eq = (other: V | Primitive | ExtendedEnum<V>): boolean => (
+    isInstance(other) ? other.is(value) : other === value
+  );
+
+  const neq = (other: V | Primitive | ExtendedEnum<V>): boolean => !eq(other);
+
+  const is = Object.assign(eq, { not: neq });
+
+  const valueOf = (): Primitive => value;
+
+  const toString = (): string => valueOf().toString();
+
+  const toJSON = valueOf;
+
+  return {
+    __kind: KIND,
+    is,
+    valueOf,
+    toString,
+    toJSON,
+  };
+};
+
 const extend = <
   E extends Enum,
   V extends Primitive,
->(enumObj: E): ExtendedEnumStatic<E, V> => class EnumClazz implements ExtendedEnum<V> {
-    private static readonly instances: Map<V, ExtendedEnum<V>> = new Map();
+>(enumObj: E): ExtendedEnumStatic<E, V> => {
+  const instances = new Map<V, ExtendedEnum<V>>();
 
-    readonly is: ExtendedEnumIs<V>;
+  const keys = (): Iterable<Keys<E>> => Object.getOwnPropertyNames(enumObj).filter(isStringKey);
 
-    private readonly value: V;
+  // NOTE: this should be the only place where unsafe type link between E and V is applied
+  const valueOf = (key: Keys<E>): V => unsafeCast<E[Keys<E>], V>(enumObj[key]);
 
-    private constructor(value: V) {
-      this.value = value;
+  const rawValues = (): Iterable<V> => pipe(
+    keys(),
+    map(valueOf),
+    toIterable,
+  );
 
-      this.is = Object.assign(
-        this.eq.bind(this),
-        { not: this.neq.bind(this) },
-      );
+  const of = (value: V): ExtendedEnum<V> => {
+    const memoized = instances.get(value);
 
-      Object.freeze(this);
-    }
+    if (memoized) return memoized;
 
-    static of(value: V): ExtendedEnum<V> {
-      const memoized = this.instances.get(value);
+    const created = instance(value);
+    instances.set(value, created);
+    return created;
+  };
 
-      if (memoized) return memoized;
+  const values = (): Iterable<ExtendedEnum<V>> => pipe(
+    rawValues(),
+    map(of),
+    toIterable,
+  );
 
-      const created = new this(value);
-      this.instances.set(value, created);
-      return created;
-    }
+  const entries = (): Iterable<[Keys<E>, ExtendedEnum<V>]> => zip(keys(), values());
 
-    static from(value: string | number | undefined): ExtendedEnum<V> | undefined;
-    static from(value: string | number | undefined, fallback: V): ExtendedEnum<V>;
-    static from(value: string | number | undefined, fallback?: V): ExtendedEnum<V> | undefined {
+  const from = (
+    (value: string | number | undefined, fallback?: V): ExtendedEnum<V> | undefined => {
       const wrapFallback = () => {
         if (fallback === undefined) return fallback;
-        return this.of(fallback);
+        return of(fallback);
       };
 
       if (value === undefined) return wrapFallback();
-      return find((v) => v.is(value), this.values()) ?? wrapFallback();
+      return find((v) => v.is(value), values()) ?? wrapFallback();
     }
+  ) as ExtendedEnumStatic<E, V>['from'];
 
-    static keys(): Iterable<Keys<E>> {
-      return Object.getOwnPropertyNames(enumObj)
-        .filter(isStringKey);
-    }
-
-    static values(): Iterable<ExtendedEnum<V>> {
-      return pipe(
-        this.rawValues(),
-        map(this.of.bind(this)),
-        toIterable,
-      );
-    }
-
-    private static valueOf(key: Keys<E>): V {
-      // NOTE: this should be the only place where unsafe type link between E and V is applied
-      return unsafeCast<E[Keys<E>], V>(enumObj[key]);
-    }
-
-    static rawValues(): Iterable<V> {
-      return pipe(
-        this.keys(),
-        map(this.valueOf.bind(this)),
-        toIterable,
-      );
-    }
-
-    static entries(): Iterable<[Keys<E>, ExtendedEnum<V>]> {
-      return zip(this.keys(), this.values());
-    }
-
-    static [Symbol.iterator](): Iterator<ExtendedEnum<V>> {
-      return this.values()[Symbol.iterator]();
-    }
-
-    private eq(other: V | Primitive | ExtendedEnum<V>): boolean {
-      if (other instanceof EnumClazz) {
-        return (other as ExtendedEnum<V>).is(this.value);
-      }
-
-      return this.value === other;
-    }
-
-    private neq(other: V | Primitive | ExtendedEnum<V>): boolean {
-      return !this.eq(other);
-    }
-
-    valueOf(): Primitive {
-      return this.value;
-    }
-
-    toString(): string {
-      return this.valueOf().toString();
-    }
-
-    toJSON(): Primitive {
-      return this.valueOf();
-    }
+  return {
+    of,
+    from,
+    keys,
+    values,
+    rawValues,
+    entries,
+    [Symbol.iterator]: values()[Symbol.iterator],
   };
+};
 
 export default extend;
