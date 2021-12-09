@@ -15,6 +15,12 @@ export type ExtendedEnumIs<V extends Primitive> = ExtendedEnumEqualsMatcher<V> &
 };
 
 export interface ExtendedEnum<V extends Primitive> {
+  /**
+   * This is a special attribute which is used to identify
+   * whether the object is an instance of extended enum.
+   */
+  readonly __kind: Symbol;
+
   readonly is: ExtendedEnumIs<V>;
 
   valueOf(): Primitive;
