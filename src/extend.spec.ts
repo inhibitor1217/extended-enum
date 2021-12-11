@@ -1,3 +1,5 @@
+/* eslint-disable max-classes-per-file */
+
 import extend from './extend';
 
 enum FruitP {
@@ -22,10 +24,10 @@ enum OsP {
 
 enum EmptyP {}
 
-const Fruit = extend<typeof FruitP, FruitP>(FruitP);
-const Animal = extend<typeof AnimalP, AnimalP>(AnimalP);
-const Os = extend<typeof OsP, OsP>(OsP);
-const Empty = extend<typeof EmptyP, EmptyP>(EmptyP);
+class Fruit extends extend<typeof FruitP, FruitP>(FruitP) {}
+class Animal extends extend<typeof AnimalP, AnimalP>(AnimalP) {}
+class Os extends extend<typeof OsP, OsP>(OsP) {}
+class Empty extends extend<typeof EmptyP, EmptyP>(EmptyP) {}
 
 describe('static of()', () => {
   it('should not fail', () => {
@@ -44,6 +46,14 @@ describe('static of()', () => {
     expect(Fruit.of(FruitP.Strawberry)).not.toBe(Fruit.of(FruitP.Apple));
     expect(Animal.of(AnimalP.Cat)).not.toBe(Animal.of(AnimalP.Fox));
     expect(Os.of(OsP.iOS)).not.toBe(Os.of(OsP.Android));
+  });
+
+  it('should fail if called with value not defined at original enumeration', () => {
+    // @ts-ignore
+    expect(() => Fruit.of('APPLE')).toThrow();
+
+    // @ts-ignore
+    expect(() => Animal.of(-1)).toThrow();
   });
 });
 
@@ -227,6 +237,24 @@ describe('is', () => {
   });
 });
 
+describe('is.not', () => {
+  it('should work with primitives', () => {
+    expect(Fruit.of(FruitP.Apple).is.not('apple')).toBe(false);
+    expect(Fruit.of(FruitP.Apple).is.not('Apple')).toBe(true);
+    expect(Fruit.of(FruitP.Apple).is.not('pear')).toBe(true);
+    expect(Animal.of(AnimalP.Fox).is.not(3)).toBe(false);
+    expect(Animal.of(AnimalP.Fox).is.not('Fox')).toBe(true);
+    expect(Animal.of(AnimalP.Fox).is.not('fox')).toBe(true);
+    expect(Animal.of(AnimalP.Fox).is.not(AnimalP.Fox)).toBe(false);
+    expect(Animal.of(AnimalP.Fox).is.not(AnimalP.Dog)).toBe(true);
+  });
+
+  it('should work with instances', () => {
+    expect(Os.of(OsP.Android).is.not(Os.of(OsP.Android))).toBe(false);
+    expect(Os.of(OsP.Android).is.not(Os.of(OsP.iOS))).toBe(true);
+  });
+});
+
 describe('valueOf', () => {
   it('should return a primitive associated with given instance', () => {
     expect(Fruit.of(FruitP.Pear).valueOf()).toBe('pear');
@@ -267,5 +295,49 @@ describe('toJSON', () => {
     };
 
     expect(JSON.stringify(obj)).toBe('{"foo":{"bar":{"animal":0}},"fruits":["strawberry","pear"],"desktop":1,"mobile":"iOS"}');
+  });
+});
+
+describe('key accessors', () => {
+  it('returns correct instaces', () => {
+    expect(Fruit.Apple.valueOf()).toBe('apple');
+    expect(Animal.Dog.valueOf()).toBe(1);
+    expect(Os.iOS.valueOf()).toBe('iOS');
+
+    expect(Fruit.Apple.is(Fruit.Apple)).toBe(true);
+    expect(Fruit.Apple.is.not(Fruit.Pear)).toBe(true);
+    expect(Animal.Cat.is(AnimalP.Cat)).toBe(true);
+    expect(Animal.Cat.is(0)).toBe(true);
+    expect(Animal.Cat.is(Animal.of(AnimalP.Cat))).toBe(true);
+    expect(Animal.Cat.is(Animal.Dog)).toBe(false);
+    expect(Animal.Cat.is.not(Animal.Fox)).toBe(true);
+  });
+
+  it('returns the same instance with using "of"', () => {
+    expect(Fruit.Strawberry).toBe(Fruit.of(FruitP.Strawberry));
+    expect(Animal.Dog).toBe(Animal.of(AnimalP.Dog));
+  });
+});
+
+describe('static keyOf()', () => {
+  it('should return a key associated with given primitive', () => {
+    expect(Fruit.keyOf(FruitP.Pear)).toBe('Pear');
+    expect(Animal.keyOf(2)).toBe('Elephant');
+    expect(Os.keyOf(OsP.Android)).toBe('Android');
+  });
+
+  it('should return a key associated with given instance', () => {
+    expect(Fruit.keyOf(Fruit.Strawberry)).toBe('Strawberry');
+    expect(Animal.keyOf(Animal.Fox)).toBe('Fox');
+    expect(Os.keyOf(Os.MacOS)).toBe('MacOS');
+  });
+});
+
+describe('false constructor', () => {
+  it('should throw', () => {
+    expect(() => new Fruit()).toThrow();
+    expect(() => new Animal()).toThrow();
+    expect(() => new Os()).toThrow();
+    expect(() => new Empty()).toThrow();
   });
 });

@@ -8,7 +8,7 @@
       "require": "./dist/cjs/index.js"
     }
   },
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "An extension to grant java-like powers to typescript enums",
   "author": "inhibitor <inhibitor@kaist.ac.kr>",
   "license": "MIT",
@@ -61,6 +61,6 @@
     "src/*.{js,ts}": "eslint --cache"
   },
   "dependencies": {
-    "@fxts/core": "^0.2.2"
+    "@fxts/core": "^0.3.2"
   }
 }

@@ -42,8 +42,6 @@ NOTE: you cannot use `extend` with `const enum`s, which are non-objects in runti
 
 - Reference all the enumerated values using the key. The reference equality is preserved.
 
-> WIP (coming in v0.2.0)
-
 ```typescript
 // access values using keys
 const pet = Animal.Cat;
@@ -56,12 +54,17 @@ expect(Animal.Cat !== Animal.Dog).toBe(false);
 
 - The enum type itself becomes the union of all the values. The values of enums does not overlap another.
 
+> The type guard of `is` and `is.not` is not supported yet
+
+
+> The exhuastive typing of union is not supported yet
+
 ```typescript
 function f(animal: Animal): void {
   // Produces type error:
   // This condition will always return 'false' since the types 'Animal.Cat' and 'Animal.Dog' have no overlap.
   if (animal.is(Animal.Cat) && animal.is(Animal.Dog)) {
-    ...
+    type T1 = typeof animal; // never
   }
 }
 
@@ -78,16 +81,34 @@ function g(animal: Animal): void {
       break
     default:
       // TypeScript compiler detects it is unreachable here
+      type T2 = typeof animal; // never
 }
 ```
 
 - Reverse mapping of values to keys are preserved.
 
-> WIP (coming in v0.2.0)
+In native `enum`s, reverse mapping from the values to the keys is supported:
 
 ```typescript
+enum Animal{
+  Cat,
+  Dog,
+}
+
 expect(Animal[Animal.Cat]).toBe('Cat');
 expect(Animal[Aniaml.Dog]).toBe('Dog');
+```
+
+`extend`ed enum is not an indexable type (in JS, only `number`, `string`, `symbol` types can be used to index an object). Thus, `extend`ed enum provides a similar indexing method to access keys from the values.
+
+```typescript
+enum _Animal { Cat, Dog }
+
+class Animal extends extend<typeof _Animal, _Animal>(_Animal) {}
+
+/* use "keyOf" method to access keys */
+expect(Animal.keyOf(Animal.Cat)).toBe('Cat');
+expect(Animal.keyOf(Animal.Dog)).toBe('Dog');
 ```
 
 ### Serialization and Deserialization
