@@ -7,6 +7,7 @@ import {
 import type {
   Enum,
   ExtendedEnum,
+  ExtendedEnumConstructor,
   ExtendedEnumOfKey,
   ExtendedEnumStatic,
   Keys,
@@ -136,4 +137,20 @@ const extend = <
   };
 };
 
-export default extend;
+const extendWithFalseConstructor = <
+  E extends Enum,
+  V extends Primitive,
+>(enumObj: E): ExtendedEnumStatic<E, V> & ExtendedEnumConstructor<V> => {
+  function FalseConstructor(): ExtendedEnum<V> {
+    throw new Error(`The constructor of ExtendedEnum is not actually implemented.
+
+The definition of constructor exists to fake TypeScript compiler,
+so that further extending the class is allowed.
+
+If the constructor is actually invoked, it will throw an error.`);
+  }
+
+  return unsafeCast(Object.assign(FalseConstructor, extend(enumObj)));
+};
+
+export default extendWithFalseConstructor;

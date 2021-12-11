@@ -65,3 +65,15 @@ export type ExtendedEnumStatic<E extends Enum, V extends Primitive> =
   & Iterable<ExtendedEnum<V>>
   & ExtendedEnumMapping<E, V>
   & ExtendedEnumStaticMethods<E, V>;
+
+export type ExtendedEnumConstructor<V extends Primitive> = {
+  /**
+   * @deprecated The constructor is not actually implemented.
+   *
+   * The definition of constructor exists to fake TypeScript compiler,
+   * so that further extending the class is allowed.
+   *
+   * If the constructor is actually invoked, it will throw an error.
+   */
+  new (): ExtendedEnum<V>;
+};
