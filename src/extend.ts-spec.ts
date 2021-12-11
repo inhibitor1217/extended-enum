@@ -26,7 +26,7 @@ checks(
   equal<ReturnType<typeof apple.is.not>, boolean>(),
 );
 
-declare const fruit: ExtendedEnum<FruitP>;
+declare const fruit: ExtendedEnum<typeof FruitP, FruitP>;
 
 const keyOfFruit = Fruit.keyOf(fruit);
 
@@ -48,4 +48,10 @@ checks(
   extendTypeOf<typeof strawberry, Fruit>(),
 
   extendTypeOf<typeof apple, Vegetable, Fail>(),
+);
+
+/* typed instances should be exclusive */
+checks(
+  extendTypeOf<typeof apple & typeof apple, typeof apple>(),
+  extendTypeOf<typeof pear & typeof strawberry, never>(),
 );

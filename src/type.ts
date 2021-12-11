@@ -4,17 +4,17 @@ export type Enum = Record<string, Primitive>;
 
 export type Keys<E extends Enum> = string & keyof E;
 
-type ExtendedEnumEqualsMatcher<V extends Primitive> = {
+type ExtendedEnumEqualsMatcher<E extends Enum, V extends Primitive> = {
   (value: V): boolean;
   (value: Primitive): boolean;
-  (value: ExtendedEnum<V>): boolean;
+  (value: ExtendedEnum<E, V>): boolean;
 };
 
-type ExtendedEnumIs<V extends Primitive> = ExtendedEnumEqualsMatcher<V> & {
-  readonly not: ExtendedEnumEqualsMatcher<V>;
+type ExtendedEnumIs<E extends Enum, V extends Primitive> = ExtendedEnumEqualsMatcher<E, V> & {
+  readonly not: ExtendedEnumEqualsMatcher<E, V>;
 };
 
-export type ExtendedEnum<V extends Primitive> = {
+type BaseExtendedEnum<E extends Enum, V extends Primitive> = {
   /**
    * @deprecated Usage of this attribute is not supported.
    *
@@ -23,7 +23,7 @@ export type ExtendedEnum<V extends Primitive> = {
    */
   readonly __kind: Symbol;
 
-  readonly is: ExtendedEnumIs<V>;
+  readonly is: ExtendedEnumIs<E, V>;
 
   valueOf(): V;
 
@@ -31,8 +31,8 @@ export type ExtendedEnum<V extends Primitive> = {
   toJSON(): Primitive;
 };
 
-export type ExtendedEnumOfKey<E extends Enum, V extends Primitive, K extends Keys<E>> =
-  & ExtendedEnum<V>
+type ExtendedEnumOfKey<E extends Enum, V extends Primitive, K extends Keys<E>> =
+  & BaseExtendedEnum<E, V>
   & {
     /**
      * @deprecated Usage of this attribute is not supported.
@@ -43,30 +43,34 @@ export type ExtendedEnumOfKey<E extends Enum, V extends Primitive, K extends Key
     readonly __brand: K;
   };
 
-type ExtendedEnumMapping<E extends Enum, V extends Primitive> = Record<Keys<E>, ExtendedEnum<V>>;
+export type ExtendedEnum<E extends Enum, V extends Primitive> = ExtendedEnumOfKey<E, V, Keys<E>>;
+
+export type ExtendedEnumMapping<E extends Enum, V extends Primitive> = {
+  [K in Keys<E>]: ExtendedEnumOfKey<E, V, K>;
+};
 
 type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
-  of(value: V): ExtendedEnum<V>;
+  of(value: V): ExtendedEnum<E, V>;
 
-  from(value: string | number | undefined): ExtendedEnum<V> | undefined;
-  from(value: string | number | undefined, fallback: V): ExtendedEnum<V>;
+  from(value: string | number | undefined): ExtendedEnum<E, V> | undefined;
+  from(value: string | number | undefined, fallback: V): ExtendedEnum<E, V>;
 
   keys(): Iterable<Keys<E>>;
-  values(): Iterable<ExtendedEnum<V>>;
+  values(): Iterable<ExtendedEnum<E, V>>;
   rawValues(): Iterable<V>;
-  entries(): Iterable<[Keys<E>, ExtendedEnum<V>]>;
+  entries(): Iterable<[Keys<E>, ExtendedEnum<E, V>]>;
 
   keyOf(value: V): Keys<E>;
-  keyOf(value: ExtendedEnum<V>): Keys<E>;
+  keyOf(value: ExtendedEnum<E, V>): Keys<E>;
   keyOf<K extends Keys<E>>(value: ExtendedEnumOfKey<E, V, K>): K;
 };
 
 export type ExtendedEnumStatic<E extends Enum, V extends Primitive> =
-  & Iterable<ExtendedEnum<V>>
+  & Iterable<ExtendedEnum<E, V>>
   & ExtendedEnumMapping<E, V>
   & ExtendedEnumStaticMethods<E, V>;
 
-export type ExtendedEnumConstructor<V extends Primitive> = {
+export type ExtendedEnumConstructor<E extends Enum, V extends Primitive> = {
   /**
    * @deprecated The constructor is not actually implemented.
    *
@@ -75,5 +79,5 @@ export type ExtendedEnumConstructor<V extends Primitive> = {
    *
    * If the constructor is actually invoked, it will throw an error.
    */
-  new (): ExtendedEnum<V>;
+  new (): ExtendedEnum<E, V>;
 };
