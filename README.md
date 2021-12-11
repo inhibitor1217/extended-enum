@@ -42,8 +42,6 @@ NOTE: you cannot use `extend` with `const enum`s, which are non-objects in runti
 
 - Reference all the enumerated values using the key. The reference equality is preserved.
 
-> WIP (coming in v0.2.0)
-
 ```typescript
 // access values using keys
 const pet = Animal.Cat;
@@ -82,8 +80,6 @@ function g(animal: Animal): void {
 ```
 
 - Reverse mapping of values to keys are preserved.
-
-> WIP (coming in v0.2.0)
 
 In native `enum`s, reverse mapping from the values to the keys is supported:
 
