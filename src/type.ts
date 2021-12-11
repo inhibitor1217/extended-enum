@@ -14,7 +14,7 @@ type ExtendedEnumIs<V extends Primitive> = ExtendedEnumEqualsMatcher<V> & {
   readonly not: ExtendedEnumEqualsMatcher<V>;
 };
 
-export interface ExtendedEnum<V extends Primitive> {
+export type ExtendedEnum<V extends Primitive> = {
   /**
    * This is a special attribute which is used to identify
    * whether the object is an instance of extended enum.
@@ -27,10 +27,9 @@ export interface ExtendedEnum<V extends Primitive> {
 
   toString(): string;
   toJSON(): Primitive;
-}
+};
 
-export interface ExtendedEnumStatic<E extends Enum, V extends Primitive>
-  extends Iterable<ExtendedEnum<V>> {
+type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
   of(value: V): ExtendedEnum<V>;
 
   from(value: string | number | undefined): ExtendedEnum<V> | undefined;
@@ -40,4 +39,8 @@ export interface ExtendedEnumStatic<E extends Enum, V extends Primitive>
   values(): Iterable<ExtendedEnum<V>>;
   rawValues(): Iterable<V>;
   entries(): Iterable<[Keys<E>, ExtendedEnum<V>]>;
-}
+};
+
+export type ExtendedEnumStatic<E extends Enum, V extends Primitive> =
+  & Iterable<ExtendedEnum<V>>
+  & ExtendedEnumStaticMethods<E, V>;
