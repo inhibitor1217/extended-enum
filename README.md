@@ -54,12 +54,17 @@ expect(Animal.Cat !== Animal.Dog).toBe(false);
 
 - The enum type itself becomes the union of all the values. The values of enums does not overlap another.
 
+> The type guard of `is` and `is.not` is not supported yet
+
+
+> The exhuastive typing of union is not supported yet
+
 ```typescript
 function f(animal: Animal): void {
   // Produces type error:
   // This condition will always return 'false' since the types 'Animal.Cat' and 'Animal.Dog' have no overlap.
   if (animal.is(Animal.Cat) && animal.is(Animal.Dog)) {
-    ...
+    type T1 = typeof animal; // never
   }
 }
 
@@ -76,6 +81,7 @@ function g(animal: Animal): void {
       break
     default:
       // TypeScript compiler detects it is unreachable here
+      type T2 = typeof animal; // never
 }
 ```
 
