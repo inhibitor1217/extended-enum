@@ -2,7 +2,7 @@ export type Primitive = string | number;
 
 export type Enum = Record<string, Primitive>;
 
-export type Keys<E extends Enum> = keyof E;
+export type Keys<E extends Enum> = string & keyof E;
 
 type ExtendedEnumEqualsMatcher<V extends Primitive> = {
   (value: V): boolean;
