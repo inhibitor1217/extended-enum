@@ -1,3 +1,5 @@
+/* eslint-disable max-classes-per-file */
+
 import extend from './extend';
 
 enum FruitP {
@@ -22,10 +24,10 @@ enum OsP {
 
 enum EmptyP {}
 
-const Fruit = extend<typeof FruitP, FruitP>(FruitP);
-const Animal = extend<typeof AnimalP, AnimalP>(AnimalP);
-const Os = extend<typeof OsP, OsP>(OsP);
-const Empty = extend<typeof EmptyP, EmptyP>(EmptyP);
+class Fruit extends extend<typeof FruitP, FruitP>(FruitP) {}
+class Animal extends extend<typeof AnimalP, AnimalP>(AnimalP) {}
+class Os extends extend<typeof OsP, OsP>(OsP) {}
+class Empty extends extend<typeof EmptyP, EmptyP>(EmptyP) {}
 
 describe('static of()', () => {
   it('should not fail', () => {
@@ -328,5 +330,14 @@ describe('static keyOf()', () => {
     expect(Fruit.keyOf(Fruit.Strawberry)).toBe('Strawberry');
     expect(Animal.keyOf(Animal.Fox)).toBe('Fox');
     expect(Os.keyOf(Os.MacOS)).toBe('MacOS');
+  });
+});
+
+describe('false constructor', () => {
+  it('should throw', () => {
+    expect(() => new Fruit()).toThrow();
+    expect(() => new Animal()).toThrow();
+    expect(() => new Os()).toThrow();
+    expect(() => new Empty()).toThrow();
   });
 });
