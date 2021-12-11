@@ -13,6 +13,7 @@ import type {
 } from './type';
 import { unsafeCast } from './util/cast';
 import { toIterable } from './util/iterable';
+import { toEntry } from './util/map';
 
 const KIND = Symbol('ExtendedEnum');
 
@@ -47,8 +48,6 @@ const extend = <
   E extends Enum,
   V extends Primitive,
 >(enumObj: E): ExtendedEnumStatic<E, V> => {
-  const instances = new Map<V, ExtendedEnum<V>>();
-
   const isStringKey = (key: string) => Number.isNaN(parseInt(key, 10));
 
   const keys = (): Iterable<Keys<E>> => Object.getOwnPropertyNames(enumObj).filter(isStringKey);
@@ -62,15 +61,9 @@ const extend = <
     toIterable,
   );
 
-  const of = (value: V): ExtendedEnum<V> => {
-    const memoized = instances.get(value);
+  const instances = Object.fromEntries(pipe(rawValues(), map(toEntry(instance))));
 
-    if (memoized) return memoized;
-
-    const created = instance(value);
-    instances.set(value, created);
-    return created;
-  };
+  const of = (value: V): ExtendedEnum<V> => instances[value];
 
   const values = (): Iterable<ExtendedEnum<V>> => pipe(
     rawValues(),
