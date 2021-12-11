@@ -16,6 +16,8 @@ type ExtendedEnumIs<V extends Primitive> = ExtendedEnumEqualsMatcher<V> & {
 
 export type ExtendedEnum<V extends Primitive> = {
   /**
+   * @deprecated Usage of this attribute is not supported.
+   *
    * This is a special attribute which is used to identify
    * whether the object is an instance of extended enum.
    */
