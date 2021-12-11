@@ -316,3 +316,17 @@ describe('key accessors', () => {
     expect(Animal.Dog).toBe(Animal.of(AnimalP.Dog));
   });
 });
+
+describe('static keyOf()', () => {
+  it('should return a key associated with given primitive', () => {
+    expect(Fruit.keyOf(FruitP.Pear)).toBe('Pear');
+    expect(Animal.keyOf(2)).toBe('Elephant');
+    expect(Os.keyOf(OsP.Android)).toBe('Android');
+  });
+
+  it('should return a key associated with given instance', () => {
+    expect(Fruit.keyOf(Fruit.Strawberry)).toBe('Strawberry');
+    expect(Animal.keyOf(Animal.Fox)).toBe('Fox');
+    expect(Os.keyOf(Os.MacOS)).toBe('MacOS');
+  });
+});

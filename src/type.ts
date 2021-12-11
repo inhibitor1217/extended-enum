@@ -25,7 +25,7 @@ export type ExtendedEnum<V extends Primitive> = {
 
   readonly is: ExtendedEnumIs<V>;
 
-  valueOf(): Primitive;
+  valueOf(): V;
 
   toString(): string;
   toJSON(): Primitive;
@@ -55,6 +55,10 @@ type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
   values(): Iterable<ExtendedEnum<V>>;
   rawValues(): Iterable<V>;
   entries(): Iterable<[Keys<E>, ExtendedEnum<V>]>;
+
+  keyOf(value: V): Keys<E>;
+  keyOf(value: ExtendedEnum<V>): Keys<E>;
+  keyOf<K extends Keys<E>>(value: ExtendedEnumOfKey<E, V, K>): K;
 };
 
 export type ExtendedEnumStatic<E extends Enum, V extends Primitive> =

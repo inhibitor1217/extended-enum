@@ -24,19 +24,21 @@ import {
 
 const KIND = Symbol('ExtendedEnum');
 
-// eslint-disable-next-line no-underscore-dangle
-const isInstance = (value: any): value is ExtendedEnum<Primitive> => value.__kind === KIND;
+const isInstance = <
+  V extends Primitive,
+  // eslint-disable-next-line no-underscore-dangle
+>(value: any): value is ExtendedEnum<V> => value.__kind === KIND;
 
 const instance = <V extends Primitive>(value: V): ExtendedEnum<V> => {
   const eq = (other: V | Primitive | ExtendedEnum<V>): boolean => (
-    isInstance(other) ? other.is(value) : other === value
+    isInstance<V>(other) ? other.is(value) : other === value
   );
 
   const neq = (other: V | Primitive | ExtendedEnum<V>): boolean => !eq(other);
 
   const is = Object.assign(eq, { not: neq });
 
-  const valueOf = (): Primitive => value;
+  const valueOf = (): V => value;
 
   const toString = (): string => valueOf().toString();
 
@@ -84,15 +86,21 @@ const extend = <
     fromEntries,
   );
 
-  const of = (value: V): ExtendedEnum<V> => {
+  const reverseMap = (value: V): Keys<E> => {
     const found = find((key) => instances[key].is(value), keys());
 
     if (!found) {
       throw new Error(`invalid value for reverse mapping, got: ${value}`);
     }
 
-    return instances[found];
+    return found;
   };
+
+  const keyOf = (value: V | ExtendedEnum<V>): Keys<E> => reverseMap(
+    isInstance<V>(value) ? value.valueOf() : value,
+  );
+
+  const of = (value: V): ExtendedEnum<V> => instances[reverseMap(value)];
 
   const values = (): Iterable<ExtendedEnum<V>> => pipe(
     rawValues(),
@@ -123,6 +131,7 @@ const extend = <
     values,
     rawValues,
     entries,
+    keyOf,
     [Symbol.iterator]: values()[Symbol.iterator],
   };
 };
