@@ -8,7 +8,7 @@ import type {
   Enum,
   ExtendedEnum,
   ExtendedEnumConstructor,
-  ExtendedEnumOfKey,
+  ExtendedEnumMapping,
   ExtendedEnumStatic,
   Keys,
   Primitive,
@@ -26,16 +26,21 @@ import {
 const KIND = Symbol('ExtendedEnum');
 
 const isInstance = <
+  E extends Enum,
   V extends Primitive,
   // eslint-disable-next-line no-underscore-dangle
->(value: any): value is ExtendedEnum<V> => value.__kind === KIND;
+>(value: any): value is ExtendedEnum<E, V> => value.__kind === KIND;
 
-const instance = <V extends Primitive>(value: V): ExtendedEnum<V> => {
-  const eq = (other: V | Primitive | ExtendedEnum<V>): boolean => (
-    isInstance<V>(other) ? other.is(value) : other === value
+const instance = <
+  E extends Enum,
+  V extends Primitive,
+  K extends Keys<E>,
+>(key: K, value: V): ExtendedEnum<E, V> => {
+  const eq = (other: V | Primitive | ExtendedEnum<E, V>): boolean => (
+    isInstance<E, V>(other) ? other.is(value) : other === value
   );
 
-  const neq = (other: V | Primitive | ExtendedEnum<V>): boolean => !eq(other);
+  const neq = (other: V | Primitive | ExtendedEnum<E, V>): boolean => !eq(other);
 
   const is = Object.assign(eq, { not: neq });
 
@@ -47,22 +52,13 @@ const instance = <V extends Primitive>(value: V): ExtendedEnum<V> => {
 
   return {
     __kind: KIND,
+    __brand: key,
     is,
     valueOf,
     toString,
     toJSON,
   };
 };
-
-/**
- * `instanceOf` behaves the same with `instance`,
- * but it returns a branded type of `ExtendedEnum<V>` with specified key `K`.
- */
-const instanceOf = <
-  E extends Enum,
-  V extends Primitive,
-  K extends Keys<E>,
->(value: V): ExtendedEnumOfKey<E, V, K> => cast(instance(value));
 
 const extend = <
   E extends Enum,
@@ -81,10 +77,13 @@ const extend = <
     toIterable,
   );
 
-  const instances = pipe(
-    keys(),
-    map(toEntry(<K extends Keys<E>>(key: K) => instanceOf<E, V, K>(valueOf(key)))),
-    fromEntries,
+  // NOTE: cast from non-branded mapping to branded mapping
+  const instances = cast<Record<Keys<E>, ExtendedEnum<E, V>>, ExtendedEnumMapping<E, V>>(
+    pipe(
+      keys(),
+      map(toEntry(<K extends Keys<E>>(key: K) => instance<E, V, K>(key, valueOf(key)))),
+      fromEntries,
+    ),
   );
 
   const reverseMap = (value: V): Keys<E> => {
@@ -97,22 +96,22 @@ const extend = <
     return found;
   };
 
-  const keyOf = (value: V | ExtendedEnum<V>): Keys<E> => reverseMap(
-    isInstance<V>(value) ? value.valueOf() : value,
+  const keyOf = (value: V | ExtendedEnum<E, V>): Keys<E> => reverseMap(
+    isInstance<E, V>(value) ? value.valueOf() : value,
   );
 
-  const of = (value: V): ExtendedEnum<V> => instances[reverseMap(value)];
+  const of = (value: V): ExtendedEnum<E, V> => instances[reverseMap(value)];
 
-  const values = (): Iterable<ExtendedEnum<V>> => pipe(
+  const values = (): Iterable<ExtendedEnum<E, V>> => pipe(
     rawValues(),
     map(of),
     toIterable,
   );
 
-  const entries = (): Iterable<[Keys<E>, ExtendedEnum<V>]> => zip(keys(), values());
+  const entries = (): Iterable<[Keys<E>, ExtendedEnum<E, V>]> => zip(keys(), values());
 
   const from = (
-    (value: string | number | undefined, fallback?: V): ExtendedEnum<V> | undefined => {
+    (value: string | number | undefined, fallback?: V): ExtendedEnum<E, V> | undefined => {
       const wrapFallback = () => {
         if (fallback === undefined) return fallback;
         return of(fallback);
@@ -140,8 +139,8 @@ const extend = <
 const extendWithFalseConstructor = <
   E extends Enum,
   V extends Primitive,
->(enumObj: E): ExtendedEnumStatic<E, V> & ExtendedEnumConstructor<V> => {
-  function FalseConstructor(): ExtendedEnum<V> {
+>(enumObj: E): ExtendedEnumStatic<E, V> & ExtendedEnumConstructor<E, V> => {
+  function FalseConstructor(): ExtendedEnum<E, V> {
     throw new Error(`The constructor of ExtendedEnum is not actually implemented.
 
 The definition of constructor exists to fake TypeScript compiler,
