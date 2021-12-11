@@ -45,6 +45,14 @@ describe('static of()', () => {
     expect(Animal.of(AnimalP.Cat)).not.toBe(Animal.of(AnimalP.Fox));
     expect(Os.of(OsP.iOS)).not.toBe(Os.of(OsP.Android));
   });
+
+  it('should fail if called with value not defined at original enumeration', () => {
+    // @ts-ignore
+    expect(() => Fruit.of('APPLE')).toThrow();
+
+    // @ts-ignore
+    expect(() => Animal.of(-1)).toThrow();
+  });
 });
 
 describe('static from()', () => {
