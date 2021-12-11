@@ -31,6 +31,18 @@ export type ExtendedEnum<V extends Primitive> = {
   toJSON(): Primitive;
 };
 
+export type ExtendedEnumOfKey<E extends Enum, V extends Primitive, K extends Keys<E>> =
+  & ExtendedEnum<V>
+  & {
+    /**
+     * @deprecated Usage of this attribute is not supported.
+     *
+     * This is a special attribute which is to exclusively define
+     * each value of enum by its key.
+     */
+    readonly __brand: K;
+  };
+
 type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
   of(value: V): ExtendedEnum<V>;
 
