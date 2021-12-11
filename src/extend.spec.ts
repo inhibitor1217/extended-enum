@@ -287,3 +287,24 @@ describe('toJSON', () => {
     expect(JSON.stringify(obj)).toBe('{"foo":{"bar":{"animal":0}},"fruits":["strawberry","pear"],"desktop":1,"mobile":"iOS"}');
   });
 });
+
+describe('key accessors', () => {
+  it('returns correct instaces', () => {
+    expect(Fruit.Apple.valueOf()).toBe('apple');
+    expect(Animal.Dog.valueOf()).toBe(1);
+    expect(Os.iOS.valueOf()).toBe('iOS');
+
+    expect(Fruit.Apple.is(Fruit.Apple)).toBe(true);
+    expect(Fruit.Apple.is.not(Fruit.Pear)).toBe(true);
+    expect(Animal.Cat.is(AnimalP.Cat)).toBe(true);
+    expect(Animal.Cat.is(0)).toBe(true);
+    expect(Animal.Cat.is(Animal.of(AnimalP.Cat))).toBe(true);
+    expect(Animal.Cat.is(Animal.Dog)).toBe(false);
+    expect(Animal.Cat.is.not(Animal.Fox)).toBe(true);
+  });
+
+  it('returns the same instance with using "of"', () => {
+    expect(Fruit.Strawberry).toBe(Fruit.of(FruitP.Strawberry));
+    expect(Animal.Dog).toBe(Animal.of(AnimalP.Dog));
+  });
+});

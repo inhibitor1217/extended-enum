@@ -43,6 +43,8 @@ export type ExtendedEnumOfKey<E extends Enum, V extends Primitive, K extends Key
     readonly __brand: K;
   };
 
+type ExtendedEnumMapping<E extends Enum, V extends Primitive> = Record<Keys<E>, ExtendedEnum<V>>;
+
 type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
   of(value: V): ExtendedEnum<V>;
 
@@ -57,4 +59,5 @@ type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
 
 export type ExtendedEnumStatic<E extends Enum, V extends Primitive> =
   & Iterable<ExtendedEnum<V>>
+  & ExtendedEnumMapping<E, V>
   & ExtendedEnumStaticMethods<E, V>;

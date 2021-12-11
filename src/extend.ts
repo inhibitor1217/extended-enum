@@ -115,6 +115,8 @@ const extend = <
   ) as ExtendedEnumStatic<E, V>['from'];
 
   return {
+    ...instances,
+
     of,
     from,
     keys,
