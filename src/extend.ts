@@ -7,13 +7,20 @@ import {
 import type {
   Enum,
   ExtendedEnum,
+  ExtendedEnumOfKey,
   ExtendedEnumStatic,
   Keys,
   Primitive,
 } from './type';
-import { unsafeCast } from './util/cast';
+import {
+  cast,
+  unsafeCast,
+} from './util/cast';
 import { toIterable } from './util/iterable';
-import { toEntry } from './util/map';
+import {
+  fromEntries,
+  toEntry,
+} from './util/map';
 
 const KIND = Symbol('ExtendedEnum');
 
@@ -44,6 +51,16 @@ const instance = <V extends Primitive>(value: V): ExtendedEnum<V> => {
   };
 };
 
+/**
+ * `instanceOf` behaves the same with `instance`,
+ * but it returns a branded type of `ExtendedEnum<V>` with specified key `K`.
+ */
+const instanceOf = <
+  E extends Enum,
+  V extends Primitive,
+  K extends Keys<E>,
+>(value: V): ExtendedEnumOfKey<E, V, K> => cast(instance(value));
+
 const extend = <
   E extends Enum,
   V extends Primitive,
@@ -61,9 +78,21 @@ const extend = <
     toIterable,
   );
 
-  const instances = Object.fromEntries(pipe(rawValues(), map(toEntry(instance))));
+  const instances = pipe(
+    keys(),
+    map(toEntry(<K extends Keys<E>>(key: K) => instanceOf<E, V, K>(valueOf(key)))),
+    fromEntries,
+  );
 
-  const of = (value: V): ExtendedEnum<V> => instances[value];
+  const of = (value: V): ExtendedEnum<V> => {
+    const found = find((key) => instances[key].is(value), keys());
+
+    if (!found) {
+      throw new Error(`invalid value for reverse mapping, got: ${value}`);
+    }
+
+    return instances[found];
+  };
 
   const values = (): Iterable<ExtendedEnum<V>> => pipe(
     rawValues(),
