@@ -55,3 +55,51 @@ checks(
   extendTypeOf<typeof apple & typeof apple, typeof apple>(),
   extendTypeOf<typeof pear & typeof strawberry, never>(),
 );
+
+/*
+ * TODO: should implement exhaustive typing of instance types
+ *
+ * remove @ts-ignore directive of following test case
+ * after implementing the feature
+ */
+(function exhaustive(f: Fruit) {
+  if (f === Fruit.Apple && f === Fruit.Pear) {
+    type T1 = typeof f;
+    // @ts-ignore
+    checks(equal<T1, never>());
+  }
+
+  switch (f) {
+    case Fruit.Apple:
+      return 'foo';
+    case Fruit.Pear:
+      return 'bar';
+    case Fruit.Strawberry:
+      return 'baz';
+    default:
+      type T2 = typeof f;
+      // @ts-ignore
+      checks(equal<T2, never>());
+      return null;
+  }
+}(pear));
+
+/*
+ * TODO: should implement type guards of `is` and `is.not`
+ *
+ * remove @ts-ignore directive of following test case
+ * after implementing the feature
+ */
+(function isTypeGuard(f: Fruit) {
+  if (f.is(Fruit.Apple) && f.is(Fruit.Pear)) {
+    type T1 = typeof f;
+    // @ts-ignore
+    checks(equal<T1, never>());
+  }
+
+  if (f.is(Fruit.Apple) && f.is.not(Fruit.Apple)) {
+    type T2 = typeof f;
+    // @ts-ignore
+    checks(equal<T2, never>());
+  }
+}(pear));
