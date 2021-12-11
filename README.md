@@ -85,9 +85,28 @@ function g(animal: Animal): void {
 
 > WIP (coming in v0.2.0)
 
+In native `enum`s, reverse mapping from the values to the keys is supported:
+
 ```typescript
+enum Animal{
+  Cat,
+  Dog,
+}
+
 expect(Animal[Animal.Cat]).toBe('Cat');
 expect(Animal[Aniaml.Dog]).toBe('Dog');
+```
+
+`extend`ed enum is not an indexable type (in JS, only `number`, `string`, `symbol` types can be used to index an object). Thus, `extend`ed enum provides a similar indexing method to access keys from the values.
+
+```typescript
+enum _Animal { Cat, Dog }
+
+class Animal extends extend<typeof _Animal, _Animal>(_Animal) {}
+
+/* use "keyOf" method to access keys */
+expect(Animal.keyOf(Animal.Cat)).toBe('Cat');
+expect(Animal.keyOf(Animal.Dog)).toBe('Dog');
 ```
 
 ### Serialization and Deserialization
