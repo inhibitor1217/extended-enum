@@ -49,7 +49,8 @@ const pets = [Animal.Dog];
 
 // reference equality is preserved
 expect(Animal.Cat === Animal.Cat).toBe(true);
-expect(Animal.Cat !== Animal.Dog).toBe(false);
+expect(Animal.Cat === Animal.Dog).toBe(false);
+expect(Animal.Cat !== Animal.Dog).toBe(true);
 ```
 
 - The enum type itself becomes the union of all the values. The values of enums does not overlap another.
@@ -57,7 +58,7 @@ expect(Animal.Cat !== Animal.Dog).toBe(false);
 > The type guard of `is` and `is.not` is not supported yet
 
 
-> The exhuastive typing of union is not supported yet
+> The exhaustive typing of union is not supported yet
 
 ```typescript
 function f(animal: Animal): void {
@@ -90,7 +91,7 @@ function g(animal: Animal): void {
 In native `enum`s, reverse mapping from the values to the keys is supported:
 
 ```typescript
-enum Animal{
+enum Animal {
   Cat,
   Dog,
 }
@@ -161,7 +162,7 @@ enum _Fruit {
   Apple = 'APPLE',
   Orange = 'ORANGE',
 }
-const Fruit = extend<typeof _Fruit, Fruit>(Fruit);
+class Fruit extends extend<typeof _Fruit, _Fruit>(_Fruit) {}
 
 // compare using values
 expect(Fruit.Apple.is(Fruit.Apple)).toBe(true);
