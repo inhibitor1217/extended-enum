@@ -255,6 +255,24 @@ describe('is.not', () => {
   });
 });
 
+describe('isNot', () => {
+  it('should work with primitives', () => {
+    expect(Fruit.of(FruitP.Apple).isNot('apple')).toBe(false);
+    expect(Fruit.of(FruitP.Apple).isNot('Apple')).toBe(true);
+    expect(Fruit.of(FruitP.Apple).isNot('pear')).toBe(true);
+    expect(Animal.of(AnimalP.Fox).isNot(3)).toBe(false);
+    expect(Animal.of(AnimalP.Fox).isNot('Fox')).toBe(true);
+    expect(Animal.of(AnimalP.Fox).isNot('fox')).toBe(true);
+    expect(Animal.of(AnimalP.Fox).isNot(AnimalP.Fox)).toBe(false);
+    expect(Animal.of(AnimalP.Fox).isNot(AnimalP.Dog)).toBe(true);
+  });
+
+  it('should work with instances', () => {
+    expect(Os.of(OsP.Android).isNot(Os.of(OsP.Android))).toBe(false);
+    expect(Os.of(OsP.Android).isNot(Os.of(OsP.iOS))).toBe(true);
+  });
+});
+
 describe('valueOf', () => {
   it('should return a primitive associated with given instance', () => {
     expect(Fruit.of(FruitP.Pear).valueOf()).toBe('pear');

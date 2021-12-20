@@ -43,6 +43,7 @@ const instance = <
   const neq = (other: V | Primitive | ExtendedEnum<E, V>): boolean => !eq(other);
 
   const is = Object.assign(eq, { not: neq });
+  const isNot = is.not;
 
   const valueOf = (): V => value;
 
@@ -54,6 +55,7 @@ const instance = <
     __kind: KIND,
     __brand: key,
     is,
+    isNot,
     valueOf,
     toString,
     toJSON,
