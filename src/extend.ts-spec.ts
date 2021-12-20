@@ -87,29 +87,25 @@ checks(
 (function isTypeGuard(f: Fruit) {
   if (f.is(Fruit.Strawberry)) {
     type T1 = typeof f;
-    // @ts-ignore
     checks(equal<T1, typeof Fruit.Strawberry>());
   }
 
   if (f.is(Fruit.Apple) && f.is(Fruit.Pear)) {
     type T2 = typeof f;
-    // @ts-ignore
     checks(extendTypeOf<T2, never>());
   }
 
-  if (f.is.not(Fruit.Strawberry)) {
+  if (f.isNot(Fruit.Strawberry)) {
     type T3 = typeof f;
     checks(
       extendTypeOf<typeof Fruit.Apple, T3>(),
       extendTypeOf<typeof Fruit.Pear, T3>(),
-      // @ts-ignore
       extendTypeOf<typeof Fruit.Strawberry, T3, Fail>(),
     );
   }
 
-  if (f.is(Fruit.Apple) && f.is.not(Fruit.Apple)) {
+  if (f.is(Fruit.Apple) && f.isNot(Fruit.Apple)) {
     type T4 = typeof f;
-    // @ts-ignore
     checks(extendTypeOf<T4, never>());
   }
 }(pear));

@@ -10,9 +10,23 @@ type ExtendedEnumEqualsMatcher<E extends Enum, V extends Primitive> = {
   (value: ExtendedEnum<E, V>): boolean;
 };
 
-type ExtendedEnumIs<E extends Enum, V extends Primitive> = ExtendedEnumEqualsMatcher<E, V> & {
+export interface ExtendedEnumIs<E extends Enum, V extends Primitive>
+  extends ExtendedEnumEqualsMatcher<E, V> {
+  <K extends Keys<E>>(
+    this: ExtendedEnum<E, V>,
+    value: ExtendedEnumOfKey<E, V, K>,
+  ): this is ExtendedEnumOfKey<E, V, K>;
+
   readonly not: ExtendedEnumEqualsMatcher<E, V>;
-};
+}
+
+export interface ExtendedEnumIsNot<E extends Enum, V extends Primitive>
+  extends ExtendedEnumEqualsMatcher<E, V> {
+  <K extends Keys<E>>(
+    this: ExtendedEnum<E, V>,
+    value: ExtendedEnumOfKey<E, V, K>,
+  ): this is ExtendedEnumOfKey<E, V, Exclude<Keys<E>, K>>;
+}
 
 type BaseExtendedEnum<E extends Enum, V extends Primitive> = {
   /**
@@ -25,7 +39,7 @@ type BaseExtendedEnum<E extends Enum, V extends Primitive> = {
 
   readonly is: ExtendedEnumIs<E, V>;
 
-  readonly isNot: ExtendedEnumEqualsMatcher<E, V>;
+  readonly isNot: ExtendedEnumIsNot<E, V>;
 
   valueOf(): V;
 
