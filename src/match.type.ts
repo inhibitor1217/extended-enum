@@ -5,7 +5,10 @@ import type {
   Primitive,
 } from './type';
 
-type PatternObjectKeys<E extends Enum, V extends Primitive> = Keys<E> | V;
+type PatternObjectKeys<E extends Enum, V extends Primitive> =
+  | Keys<E>
+  | V
+  | Primitive;
 
 export type PatternObject<
   E extends Enum,
@@ -13,7 +16,11 @@ export type PatternObject<
   Result,
 > = Partial<Record<PatternObjectKeys<E, V>, Result>>;
 
-type PatternArrayKeys<E extends Enum, V extends Primitive> = Keys<E> | V | ExtendedEnum<E, V>;
+type PatternArrayKeys<E extends Enum, V extends Primitive> =
+  | Keys<E>
+  | V
+  | Primitive
+  | ExtendedEnum<E, V>;
 
 export type PatternArray<
   E extends Enum,
