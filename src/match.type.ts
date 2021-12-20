@@ -14,7 +14,9 @@ export type PatternObject<
   E extends Enum,
   V extends Primitive,
   Result,
-> = Partial<Record<PatternObjectKeys<E, V>, Result>>;
+> = {
+  [key in PatternObjectKeys<E, V>]: Result;
+};
 
 type PatternArrayKeys<E extends Enum, V extends Primitive> =
   | Keys<E>
@@ -30,7 +32,15 @@ export type PatternArray<
 
 export type ExtendedEnumPatternMatcher<E extends Enum, V extends Primitive> = {
   <Result>(patterns: PatternObject<E, V, Result>): Result | undefined;
-  <Result>(patterns: PatternObject<E, V, Result>, defaultCase: Result): Result;
   <Result>(patterns: PatternArray<E, V, Result>): Result | undefined;
-  <Result>(patterns: PatternArray<E, V, Result>, defaultCase: Result): Result;
+
+  <Result, DefaultCase = Result>(
+    patterns: PatternObject<E, V, Result>,
+    defaultCase: DefaultCase,
+  ): Result | DefaultCase;
+
+  <Result, DefaultCase = Result>(
+    patterns: PatternArray<E, V, Result>,
+    defaultCase: DefaultCase,
+  ): Result | DefaultCase;
 };
