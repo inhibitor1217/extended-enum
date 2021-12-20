@@ -25,6 +25,8 @@ type BaseExtendedEnum<E extends Enum, V extends Primitive> = {
 
   readonly is: ExtendedEnumIs<E, V>;
 
+  readonly isNot: ExtendedEnumEqualsMatcher<E, V>;
+
   valueOf(): V;
 
   toString(): string;
