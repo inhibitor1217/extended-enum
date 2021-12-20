@@ -55,8 +55,6 @@ expect(Animal.Cat !== Animal.Dog).toBe(true);
 
 - The enum type itself becomes the union of all the values. The values of enums does not overlap another.
 
-> The type guard of `is` and `is.not` is not supported yet
-
 
 > The exhaustive typing of union is not supported yet
 
