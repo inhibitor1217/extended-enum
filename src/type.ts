@@ -10,6 +10,7 @@ type ExtendedEnumEqualsMatcher<E extends Enum, V extends Primitive> = {
   (value: V): boolean;
   (value: Primitive): boolean;
   (value: ExtendedEnum<E, V>): boolean;
+  (value: V | Primitive | ExtendedEnum<E, V>): boolean;
 };
 
 export interface ExtendedEnumIs<E extends Enum, V extends Primitive>
@@ -45,6 +46,7 @@ type BaseExtendedEnum<E extends Enum, V extends Primitive> = {
 
   readonly match: ExtendedEnumPatternMatcher<E, V>;
 
+  keyOf(): Keys<E>;
   valueOf(): V;
 
   toString(): string;
@@ -61,6 +63,8 @@ type ExtendedEnumOfKey<E extends Enum, V extends Primitive, K extends Keys<E>> =
      * each value of enum by its key.
      */
     readonly __brand: K;
+
+    keyOf(): K;
   };
 
 export type ExtendedEnum<E extends Enum, V extends Primitive> = ExtendedEnumOfKey<E, V, Keys<E>>;
