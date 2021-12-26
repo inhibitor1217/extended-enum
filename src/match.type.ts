@@ -28,7 +28,7 @@ export type PatternArray<
   E extends Enum,
   V extends Primitive,
   Result,
-> = [PatternArrayKeys<E, V>, Result][];
+> = [PatternArrayKeys<E, V> | PatternArrayKeys<E, V>[], Result][];
 
 export type ExtendedEnumPatternMatcher<E extends Enum, V extends Primitive> = {
   <Result>(patterns: PatternObject<E, V, Result>): Result | undefined;
