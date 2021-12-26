@@ -84,22 +84,28 @@ checks(
   }
 }(pear));
 
-/*
- * TODO: should implement type guards of `is` and `is.not`
- *
- * remove @ts-ignore directive of following test case
- * after implementing the feature
- */
 (function isTypeGuard(f: Fruit) {
-  if (f.is(Fruit.Apple) && f.is(Fruit.Pear)) {
+  if (f.is(Fruit.Strawberry)) {
     type T1 = typeof f;
-    // @ts-ignore
-    checks(equal<T1, never>());
+    checks(equal<T1, typeof Fruit.Strawberry>());
   }
 
-  if (f.is(Fruit.Apple) && f.is.not(Fruit.Apple)) {
+  if (f.is(Fruit.Apple) && f.is(Fruit.Pear)) {
     type T2 = typeof f;
-    // @ts-ignore
-    checks(equal<T2, never>());
+    checks(extendTypeOf<T2, never>());
+  }
+
+  if (f.isNot(Fruit.Strawberry)) {
+    type T3 = typeof f;
+    checks(
+      extendTypeOf<typeof Fruit.Apple, T3>(),
+      extendTypeOf<typeof Fruit.Pear, T3>(),
+      extendTypeOf<typeof Fruit.Strawberry, T3, Fail>(),
+    );
+  }
+
+  if (f.is(Fruit.Apple) && f.isNot(Fruit.Apple)) {
+    type T4 = typeof f;
+    checks(extendTypeOf<T4, never>());
   }
 }(pear));

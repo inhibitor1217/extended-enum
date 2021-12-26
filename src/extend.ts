@@ -4,6 +4,7 @@ import {
   pipe,
   zip,
 } from '@fxts/core';
+import match from './match';
 import type {
   Enum,
   ExtendedEnum,
@@ -43,7 +44,9 @@ const instance = <
   const neq = (other: V | Primitive | ExtendedEnum<E, V>): boolean => !eq(other);
 
   const is = Object.assign(eq, { not: neq });
+  const isNot = is.not;
 
+  const keyOf = (): K => key;
   const valueOf = (): V => value;
 
   const toString = (): string => valueOf().toString();
@@ -54,6 +57,9 @@ const instance = <
     __kind: KIND,
     __brand: key,
     is,
+    isNot,
+    match,
+    keyOf,
     valueOf,
     toString,
     toJSON,
