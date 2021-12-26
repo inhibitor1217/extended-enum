@@ -92,6 +92,11 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     [EFruit.Strawberry, [[3, 2], [2, 9, 7]]],
   ]);
 
+  const f9 = fruitMatch([
+    [[Fruit.Apple, Fruit.Orange], 'apple_or_orange' as const],
+    [Fruit.Strawberry, 'strawberry' as const],
+  ]);
+
   checks(
     equal<typeof f1, unknown>(),
     equal<typeof f2, number | undefined>(),
@@ -101,6 +106,7 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     equal<typeof f6, string | undefined>(),
     equal<typeof f7, number | undefined>(),
     equal<typeof f8, number[][] | undefined>(),
+    equal<typeof f9, 'apple_or_orange' | 'strawberry' | undefined>(),
   );
 }());
 
@@ -162,11 +168,18 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     [EFruit.Apple, undefined],
   ]);
 
+  const f5 = fruitMatch([
+    [[0, 'Apple', Fruit.Apple], 'Fruit.Apple' as const],
+    [[1, 'Orange', Fruit.Orange], 'Fruit.Orange' as const],
+    [[2, 'Strawberry', Fruit.Strawberry], 'Fruit.Strawberry' as const],
+  ]);
+
   checks(
     equal<typeof f1, 'foo' | 'bar' | 'baz' | undefined>(),
     equal<typeof f2, string[] | undefined>(),
     equal<typeof f3, { foo: string } | null | undefined>(),
     equal<typeof f4, undefined>(),
+    equal<typeof f5, 'Fruit.Apple' | 'Fruit.Orange' | 'Fruit.Strawberry' | undefined>(),
   );
 }());
 
@@ -280,6 +293,15 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     [] as number[][],
   );
 
+  const f9 = fruitMatch(
+    [
+      [[0, 'Apple', Fruit.Apple], 'Fruit.Apple' as const],
+      [[1, 'Orange', Fruit.Orange], 'Fruit.Orange' as const],
+      [[2, 'Strawberry', Fruit.Strawberry], 'Fruit.Strawberry' as const],
+    ],
+    'Fruit.Unknown' as const,
+  );
+
   checks(
     equal<typeof f1, unknown>(),
     equal<typeof f2, number>(),
@@ -289,5 +311,6 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     equal<typeof f6, 'lorem' | 'ipsum' | 'dolor' | 'amet'>(),
     equal<typeof f7, number | null>(),
     equal<typeof f8, number[][]>(),
+    equal<typeof f9, `Fruit.${'Apple' | 'Orange' | 'Strawberry' | 'Unknown'}`>(),
   );
 }());
