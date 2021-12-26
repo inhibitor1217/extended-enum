@@ -172,9 +172,9 @@ expect(Fruit.Apple.is('apple')).toBe(false);
 expect(Fruit.Apple.is('ORANGE')).toBe(false);
 ```
 
-> WIP (coming in v0.3.0)
+`match` provides a utility for pattern matching. Specify the mappings as you please (defining patterns with keys, values, primitive values are all supported), then the utility will search for the pattern and return the desired mapping.
 
-Methods for pattern matching is also provided: `match`.
+Mapping multiple patterns to a single value is also supported (see the last example).
 
 ```typescript
 declare const fruit: Fruit;
@@ -197,6 +197,7 @@ fruit.match({
 fruit.match([
   [Fruit.Apple, 0],
   [Fruit.Orange, 1],
+  [[Fruit.Apple, Fruit.Orange], 2], // matching multiple patterns to a single value
 ])
 ```
 
