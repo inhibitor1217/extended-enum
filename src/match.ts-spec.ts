@@ -1,4 +1,3 @@
-import type { ExtendedEnumPatternMatcher } from './match.type';
 import type { ExtendedEnumStatic } from './type';
 import {
   checks,
@@ -12,31 +11,28 @@ enum Animal { Cat = 'CAT', Dog = 'DOG' }
 declare const EFruit: ExtendedEnumStatic<typeof Fruit, Fruit>;
 declare const EAnimal: ExtendedEnumStatic<typeof Animal, Animal>;
 
-declare const fruitMatch: ExtendedEnumPatternMatcher<typeof Fruit, Fruit>;
-declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
-
 /* pattern as object */
 (function patternAsObject() {
-  const f1 = fruitMatch({});
+  const f1 = EFruit.Apple.match({});
 
-  const f2 = fruitMatch({ 0: 0, 1: 1 });
+  const f2 = EFruit.Apple.match({ 0: 0, 1: 1 });
 
-  const f3 = animalMatch({
+  const f3 = EAnimal.Dog.match({
     [Animal.Cat]: Animal.Dog,
     [Animal.Dog]: Animal.Cat,
   });
 
-  const f4 = animalMatch<{ foo?: string, lorem?: string }>({
+  const f4 = EAnimal.Dog.match<{ foo?: string, lorem?: string }>({
     CAT: { foo: 'bar' },
     DOG: { lorem: 'ipsum' },
   });
 
-  const f5 = fruitMatch({
+  const f5 = EFruit.Apple.match({
     Orange: [Fruit.Orange, 'orange'] as const,
     Strawberry: [Fruit.Strawberry, 'strawberry'] as const,
   });
 
-  const f6 = fruitMatch({
+  const f6 = EFruit.Apple.match({
     0: 'lorem',
     1: 'ipsum',
     2: 'dolor',
@@ -54,45 +50,45 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
 
 /* pattern as array */
 (function patternAsArray() {
-  const f1 = fruitMatch([]);
+  const f1 = EFruit.Apple.match([]);
 
-  const f2 = fruitMatch([
+  const f2 = EFruit.Apple.match([
     [0, 0],
     [0, 1],
   ]);
 
-  const f3 = animalMatch([
+  const f3 = EAnimal.Dog.match([
     [Animal.Cat, Animal.Dog],
     [Animal.Dog, Animal.Cat],
   ]);
 
-  const f4 = animalMatch<{ foo?: string, lorem?: string }>([
+  const f4 = EAnimal.Dog.match<{ foo?: string, lorem?: string }>([
     ['CAT', { foo: 'bar' }],
     ['DOG', { lorem: 'ipsum' }],
   ]);
 
-  const f5 = fruitMatch([
+  const f5 = EFruit.Apple.match([
     ['Orange', [Fruit.Orange, 'orange'] as const],
     ['Strawberry', [Fruit.Strawberry, 'strawberry'] as const],
   ]);
 
-  const f6 = fruitMatch([
+  const f6 = EFruit.Apple.match([
     [0, 'lorem'],
     [1, 'ipsum'],
     [2, 'dolor'],
   ]);
 
-  const f7 = animalMatch([
+  const f7 = EAnimal.Dog.match([
     [EAnimal.Cat, 1],
     [EAnimal.Dog, 2],
     [EAnimal.Cat, 3],
   ]);
 
-  const f8 = fruitMatch([
+  const f8 = EFruit.Apple.match([
     [EFruit.Strawberry, [[3, 2], [2, 9, 7]]],
   ]);
 
-  const f9 = fruitMatch([
+  const f9 = EFruit.Apple.match([
     [[Fruit.Apple, Fruit.Orange], 'apple_or_orange' as const],
     [Fruit.Strawberry, 'strawberry' as const],
   ]);
@@ -112,23 +108,23 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
 
 /* mixed keys, pattern as object */
 (function mixedKeysPatternAsObject() {
-  const f1 = animalMatch({
+  const f1 = EAnimal.Dog.match({
     Cat: 'foo',
     CAT: 'bar',
   });
 
-  const f2 = fruitMatch({
+  const f2 = EFruit.Apple.match({
     0: ['lorem'],
     1: ['ipsum'],
     Strawberry: ['dolor'],
   });
 
-  const f3 = animalMatch({
+  const f3 = EAnimal.Dog.match({
     Cat: { foo: 'bar' },
     DOG: null,
   });
 
-  const f4 = fruitMatch({
+  const f4 = EFruit.Apple.match({
     Orange: undefined,
     [Fruit.Apple]: undefined,
   });
@@ -143,14 +139,14 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
 
 /* mixed keys, pattern as array */
 (function mixedKeysPatternAsObject() {
-  const f1 = animalMatch([
+  const f1 = EAnimal.Dog.match([
     ['Cat', 'foo' as const],
     ['CAT', 'bar' as const],
     [EAnimal.Cat, 'baz' as const],
     [Animal.Cat, 'bar' as const],
   ]);
 
-  const f2 = fruitMatch([
+  const f2 = EFruit.Apple.match([
     [0, ['lorem']],
     [Fruit.Orange, ['ipsum']],
     ['Strawberry', ['dolor']],
@@ -158,17 +154,17 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     [EFruit.Orange, ['ipsum']],
   ]);
 
-  const f3 = animalMatch([
+  const f3 = EAnimal.Dog.match([
     ['Cat', { foo: 'bar' }],
     ['DOG', null],
   ]);
 
-  const f4 = fruitMatch([
+  const f4 = EFruit.Apple.match([
     ['Orange', undefined],
     [EFruit.Apple, undefined],
   ]);
 
-  const f5 = fruitMatch([
+  const f5 = EFruit.Apple.match([
     [[0, 'Apple', Fruit.Apple], 'Fruit.Apple' as const],
     [[1, 'Orange', Fruit.Orange], 'Fruit.Orange' as const],
     [[2, 'Strawberry', Fruit.Strawberry], 'Fruit.Strawberry' as const],
@@ -185,11 +181,11 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
 
 /* with default value, pattern as object */
 (function patternAsObjectWithDefaultValue() {
-  const f1 = fruitMatch({}, null);
+  const f1 = EFruit.Apple.match({}, null);
 
-  const f2 = fruitMatch({ 0: 0, 1: 1 }, 2);
+  const f2 = EFruit.Apple.match({ 0: 0, 1: 1 }, 2);
 
-  const f3 = animalMatch(
+  const f3 = EAnimal.Dog.match(
     {
       [Animal.Cat]: Animal.Dog,
       [Animal.Dog]: Animal.Cat,
@@ -197,7 +193,7 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     Animal.Cat,
   );
 
-  const f4 = animalMatch<{ foo?: string, lorem?: string }>(
+  const f4 = EAnimal.Dog.match<{ foo?: string, lorem?: string }>(
     {
       CAT: { foo: 'bar' },
       DOG: { lorem: 'ipsum' },
@@ -205,7 +201,7 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     { foo: 'bar' },
   );
 
-  const f5 = fruitMatch(
+  const f5 = EFruit.Apple.match(
     {
       Orange: [Fruit.Orange, 'orange'] as const,
       Strawberry: [Fruit.Strawberry, 'strawberry'] as const,
@@ -213,7 +209,7 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     [Fruit.Apple, 'unknown'] as const,
   );
 
-  const f6 = fruitMatch(
+  const f6 = EFruit.Apple.match(
     {
       0: 'lorem',
       1: 'ipsum',
@@ -234,9 +230,9 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
 
 /* with default value, pattern as array */
 (function patternAsArrayWithDefaultValue() {
-  const f1 = fruitMatch([], null);
+  const f1 = EFruit.Apple.match([], null);
 
-  const f2 = fruitMatch(
+  const f2 = EFruit.Apple.match(
     [
       [0, 0],
       [0, 1],
@@ -244,7 +240,7 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     -1,
   );
 
-  const f3 = animalMatch(
+  const f3 = EAnimal.Dog.match(
     [
       [Animal.Cat, Animal.Dog],
       [Animal.Dog, Animal.Cat],
@@ -252,7 +248,7 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     Animal.Cat,
   );
 
-  const f4 = animalMatch<{ foo?: string, lorem?: string }>(
+  const f4 = EAnimal.Dog.match<{ foo?: string, lorem?: string }>(
     [
       ['CAT', { foo: 'bar' }],
       ['DOG', { lorem: 'ipsum' }],
@@ -260,7 +256,7 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     { foo: 'bar' },
   );
 
-  const f5 = fruitMatch(
+  const f5 = EFruit.Apple.match(
     [
       ['Orange', [Fruit.Orange, 'orange'] as const],
       ['Strawberry', [Fruit.Strawberry, 'strawberry'] as const],
@@ -268,7 +264,7 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     [Fruit.Apple, 'unknown'] as const,
   );
 
-  const f6 = fruitMatch(
+  const f6 = EFruit.Apple.match(
     [
       [0, 'lorem' as const],
       [1, 'ipsum' as const],
@@ -277,7 +273,7 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     'amet' as const,
   );
 
-  const f7 = animalMatch(
+  const f7 = EAnimal.Dog.match(
     [
       [EAnimal.Cat, 1],
       [EAnimal.Dog, 2],
@@ -286,14 +282,14 @@ declare const animalMatch: ExtendedEnumPatternMatcher<typeof Animal, Animal>;
     null,
   );
 
-  const f8 = fruitMatch(
+  const f8 = EFruit.Apple.match(
     [
       [EFruit.Strawberry, [[3, 2], [2, 9, 7]]],
     ],
     [] as number[][],
   );
 
-  const f9 = fruitMatch(
+  const f9 = EFruit.Apple.match(
     [
       [[0, 'Apple', Fruit.Apple], 'Fruit.Apple' as const],
       [[1, 'Orange', Fruit.Orange], 'Fruit.Orange' as const],

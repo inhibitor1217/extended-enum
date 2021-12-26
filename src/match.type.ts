@@ -31,15 +31,24 @@ export type PatternArray<
 > = [PatternArrayKeys<E, V> | PatternArrayKeys<E, V>[], Result][];
 
 export type ExtendedEnumPatternMatcher<E extends Enum, V extends Primitive> = {
-  <Result>(patterns: PatternObject<E, V, Result>): Result | undefined;
-  <Result>(patterns: PatternArray<E, V, Result>): Result | undefined;
+  <Result>(
+    this: ExtendedEnum<E, V>,
+    patterns: PatternObject<E, V, Result>,
+  ): Result | undefined;
+
+  <Result>(
+    this: ExtendedEnum<E, V>,
+    patterns: PatternArray<E, V, Result>,
+  ): Result | undefined;
 
   <Result, DefaultCase = Result>(
+    this: ExtendedEnum<E, V>,
     patterns: PatternObject<E, V, Result>,
     defaultCase: DefaultCase,
   ): Result | DefaultCase;
 
   <Result, DefaultCase = Result>(
+    this: ExtendedEnum<E, V>,
     patterns: PatternArray<E, V, Result>,
     defaultCase: DefaultCase,
   ): Result | DefaultCase;

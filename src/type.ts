@@ -1,3 +1,5 @@
+import type { ExtendedEnumPatternMatcher } from './match.type';
+
 export type Primitive = string | number;
 
 export type Enum = Record<string, Primitive>;
@@ -40,6 +42,8 @@ type BaseExtendedEnum<E extends Enum, V extends Primitive> = {
   readonly is: ExtendedEnumIs<E, V>;
 
   readonly isNot: ExtendedEnumIsNot<E, V>;
+
+  readonly match: ExtendedEnumPatternMatcher<E, V>;
 
   valueOf(): V;
 
