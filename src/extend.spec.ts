@@ -273,6 +273,14 @@ describe('isNot', () => {
   });
 });
 
+describe('keyOf', () => {
+  it('should return a key associated with given instance', () => {
+    expect(Fruit.of(FruitP.Strawberry).keyOf()).toBe('Strawberry');
+    expect(Fruit.Apple.keyOf()).toBe('Apple');
+    expect(Os.iOS.keyOf()).toBe('iOS');
+  });
+});
+
 describe('valueOf', () => {
   it('should return a primitive associated with given instance', () => {
     expect(Fruit.of(FruitP.Pear).valueOf()).toBe('pear');

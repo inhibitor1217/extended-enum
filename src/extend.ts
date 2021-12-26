@@ -46,6 +46,7 @@ const instance = <
   const is = Object.assign(eq, { not: neq });
   const isNot = is.not;
 
+  const keyOf = (): K => key;
   const valueOf = (): V => value;
 
   const toString = (): string => valueOf().toString();
@@ -58,6 +59,7 @@ const instance = <
     is,
     isNot,
     match,
+    keyOf,
     valueOf,
     toString,
     toJSON,
