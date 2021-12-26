@@ -4,6 +4,7 @@ import {
   pipe,
   zip,
 } from '@fxts/core';
+import match from './match';
 import type {
   Enum,
   ExtendedEnum,
@@ -56,6 +57,7 @@ const instance = <
     __brand: key,
     is,
     isNot,
+    match,
     valueOf,
     toString,
     toJSON,
