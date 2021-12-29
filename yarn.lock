@@ -987,10 +987,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fxts/core@^0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@fxts/core/-/core-0.3.2.tgz#c4729ce2df746eac23732dbf14b9c1734103d5c4"
-  integrity sha512-oZtUKGlCet7v+bloZ4zwOCIuBq03MZh92t3L/taW5+L8anb/Rhw7Xkk0G84MUAHa28ixViwn7gZ+w6zdoQFdEg==
+"@fxts/core@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@fxts/core/-/core-0.4.0.tgz#29c1b8a296ceb305a28c43f38a57c6d3b3450adf"
+  integrity sha512-wg7vy/2RZ3/iYQHDsd6tWdPhmAMfFZn2VuiZyLzWomfjxSRoxjlkxk9Ya5JFAt1uJOs3Si1cXtntW7Gco2miRQ==
   dependencies:
     tslib "^2.3.1"
 
