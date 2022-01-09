@@ -974,9 +974,9 @@
     strip-json-comments "^3.1.1"
 
 "@fxts/core@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@fxts/core/-/core-0.4.0.tgz#29c1b8a296ceb305a28c43f38a57c6d3b3450adf"
-  integrity sha512-wg7vy/2RZ3/iYQHDsd6tWdPhmAMfFZn2VuiZyLzWomfjxSRoxjlkxk9Ya5JFAt1uJOs3Si1cXtntW7Gco2miRQ==
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@fxts/core/-/core-0.4.1.tgz#e74f3442f4f328ceada8ec47199b9f07eb9a1c8d"
+  integrity sha512-qQPyYYgeEHLySPP5JLCg21I3u9t2ITZuNjhs1Ye/+gS8La7NAJUaBzkRZNhyqnq5KXv/tNkLNtsGhtwawgFAnw==
   dependencies:
     tslib "^2.3.1"
 
