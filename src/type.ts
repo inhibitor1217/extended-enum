@@ -19,8 +19,6 @@ export interface ExtendedEnumIs<E extends Enum, V extends Primitive>
     this: ExtendedEnum<E, V>,
     value: ExtendedEnumOfKey<E, V, K>,
   ): this is ExtendedEnumOfKey<E, V, K>;
-
-  readonly not: ExtendedEnumEqualsMatcher<E, V>;
 }
 
 export interface ExtendedEnumIsNot<E extends Enum, V extends Primitive>
@@ -39,6 +37,46 @@ type BaseExtendedEnum<E extends Enum, V extends Primitive> = {
    * whether the object is an instance of extended enum.
    */
   readonly __kind: Symbol;
+
+  /**
+   * @deprecated
+   *
+   * `eq` determines the equality of the given primitive value
+   * and the defined value.
+   *
+   * `eq` governs the comparison performed in the instance:
+   * such as in `from`, `is`, or `match`.
+   *
+   * **Using this method directly is not recommended.**
+   * `is` or `isNot` are perhaps the methods you are looking for.
+   *
+   * In default behavior, this does the reference equality comparison (`===`).
+   * Overriding this method will alter the core behavior, granting new possibilities.
+   * (See the example.)
+   *
+   * In the following example, the case-insenstivie comparison overrides the default comparison.
+   * Observe how the behavior of `from`, `is`, or `match` differs from the original behavior.
+   *
+   * @example
+   *
+   * ```typescript
+   * enum Level { Low = 'LOW', High = 'HIGH' }
+   * class ELevel extends extend<typeof Level, Level>(Level) {
+   *  eq(other: string) {
+   *    return this.valueOf().toLowerCase() === other.toLowerCase();
+   *  }
+   * }
+   *
+   * ELevel.Low.is('low') // true
+   * ELevel.from('high')  // ELevel.High
+   * ELevel.Low.match({ low: 0, high: 1 }) // 0
+   * ```
+   *
+   * @param other The primitive value to compare with.
+   * @returns Whether given value is "equal" to this instance.
+   * This "equality" can be freely defined in advanced usage.
+   */
+  eq(other: V | Primitive): boolean;
 
   readonly is: ExtendedEnumIs<E, V>;
 
@@ -74,15 +112,30 @@ export type ExtendedEnumMapping<E extends Enum, V extends Primitive> = {
 };
 
 type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
-  of(value: V): ExtendedEnum<E, V>;
+  of(
+    this: ExtendedEnumStatic<E, V>,
+    value: V,
+  ): ExtendedEnum<E, V>;
 
-  from(value: string | number | undefined): ExtendedEnum<E, V> | undefined;
-  from(value: string | number | undefined, fallback: V): ExtendedEnum<E, V>;
+  from(
+    this: ExtendedEnumStatic<E, V>,
+    value: string | number | undefined,
+  ): ExtendedEnum<E, V> | undefined;
+  from(
+    this: ExtendedEnumStatic<E, V>,
+    value: string | number | undefined,
+    fallback: V,
+  ): ExtendedEnum<E, V>;
 
   keys(): Iterable<Keys<E>>;
-  values(): Iterable<ExtendedEnum<E, V>>;
+
   rawValues(): Iterable<V>;
-  entries(): Iterable<[Keys<E>, ExtendedEnum<E, V>]>;
+
+  values(this: ExtendedEnumStatic<E, V>): Iterable<ExtendedEnum<E, V>>;
+
+  entries(
+    this: ExtendedEnumStatic<E, V>,
+  ): Iterable<[Keys<E>, ExtendedEnum<E, V>]>;
 
   keyOf(value: V): Keys<E>;
   keyOf(value: ExtendedEnum<E, V>): Keys<E>;
@@ -92,16 +145,15 @@ type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
 export type ExtendedEnumStatic<E extends Enum, V extends Primitive> =
   & Iterable<ExtendedEnum<E, V>>
   & ExtendedEnumMapping<E, V>
-  & ExtendedEnumStaticMethods<E, V>;
-
-export type ExtendedEnumConstructor<E extends Enum, V extends Primitive> = {
-  /**
-   * @deprecated The constructor is not actually implemented.
-   *
-   * The definition of constructor exists to fake TypeScript compiler,
-   * so that further extending the class is allowed.
-   *
-   * If the constructor is actually invoked, it will throw an error.
-   */
-  new (): ExtendedEnum<E, V>;
-};
+  & ExtendedEnumStaticMethods<E, V>
+  & {
+    /**
+     * @deprecated The constructor is not actually implemented.
+     *
+     * The definition of constructor exists to fake TypeScript compiler,
+     * so that further extending the class is allowed.
+     *
+     * If the constructor is actually invoked, it will throw an error.
+     */
+    new (): ExtendedEnum<E, V>
+  };

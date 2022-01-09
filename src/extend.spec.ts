@@ -237,24 +237,6 @@ describe('is', () => {
   });
 });
 
-describe('is.not', () => {
-  it('should work with primitives', () => {
-    expect(Fruit.of(FruitP.Apple).is.not('apple')).toBe(false);
-    expect(Fruit.of(FruitP.Apple).is.not('Apple')).toBe(true);
-    expect(Fruit.of(FruitP.Apple).is.not('pear')).toBe(true);
-    expect(Animal.of(AnimalP.Fox).is.not(3)).toBe(false);
-    expect(Animal.of(AnimalP.Fox).is.not('Fox')).toBe(true);
-    expect(Animal.of(AnimalP.Fox).is.not('fox')).toBe(true);
-    expect(Animal.of(AnimalP.Fox).is.not(AnimalP.Fox)).toBe(false);
-    expect(Animal.of(AnimalP.Fox).is.not(AnimalP.Dog)).toBe(true);
-  });
-
-  it('should work with instances', () => {
-    expect(Os.of(OsP.Android).is.not(Os.of(OsP.Android))).toBe(false);
-    expect(Os.of(OsP.Android).is.not(Os.of(OsP.iOS))).toBe(true);
-  });
-});
-
 describe('isNot', () => {
   it('should work with primitives', () => {
     expect(Fruit.of(FruitP.Apple).isNot('apple')).toBe(false);
@@ -331,12 +313,12 @@ describe('key accessors', () => {
     expect(Os.iOS.valueOf()).toBe('iOS');
 
     expect(Fruit.Apple.is(Fruit.Apple)).toBe(true);
-    expect(Fruit.Apple.is.not(Fruit.Pear)).toBe(true);
+    expect(Fruit.Apple.isNot(Fruit.Pear)).toBe(true);
     expect(Animal.Cat.is(AnimalP.Cat)).toBe(true);
     expect(Animal.Cat.is(0)).toBe(true);
     expect(Animal.Cat.is(Animal.of(AnimalP.Cat))).toBe(true);
     expect(Animal.Cat.is(Animal.Dog)).toBe(false);
-    expect(Animal.Cat.is.not(Animal.Fox)).toBe(true);
+    expect(Animal.Cat.isNot(Animal.Fox)).toBe(true);
   });
 
   it('returns the same instance with using "of"', () => {
