@@ -9,10 +9,10 @@ import {
   Fail,
 } from './test/typecheck';
 
-enum FruitP { Apple, Pear, Strawberry }
-class Fruit extends extend<typeof FruitP, FruitP>(FruitP) {}
+enum Fruit { Apple, Pear, Strawberry }
+class EFruit extends extend<typeof Fruit, Fruit>(Fruit) {}
 
-const apple = Fruit.of(FruitP.Apple);
+const apple = EFruit.of(Fruit.Apple);
 
 /* is */
 checks(
@@ -20,28 +20,28 @@ checks(
   equal<ReturnType<typeof apple.is>, boolean>(),
 );
 
-declare const fruit: ExtendedEnum<typeof FruitP, FruitP>;
+declare const fruit: ExtendedEnum<typeof Fruit, Fruit>;
 
-const keyOfFruit = Fruit.keyOf(fruit);
+const keyOfFruit = EFruit.keyOf(fruit);
 
 /* keyOf */
 checks(
   equal<typeof keyOfFruit, 'Apple' | 'Pear' | 'Strawberry'>(),
 );
 
-const pear = Fruit.Pear;
-const strawberry = Fruit.Strawberry;
+const pear = EFruit.Pear;
+const strawberry = EFruit.Strawberry;
 
-enum VegetableP { Potato, Celery }
-class Vegetable extends extend<typeof VegetableP, VegetableP>(VegetableP) {}
+enum Vegetable { Potato, Celery }
+class EVegetable extends extend<typeof Vegetable, Vegetable>(Vegetable) {}
 
 /* typed instances */
 checks(
-  extendTypeOf<typeof apple, Fruit>(),
-  extendTypeOf<typeof pear, Fruit>(),
-  extendTypeOf<typeof strawberry, Fruit>(),
+  extendTypeOf<typeof apple, EFruit>(),
+  extendTypeOf<typeof pear, EFruit>(),
+  extendTypeOf<typeof strawberry, EFruit>(),
 
-  extendTypeOf<typeof apple, Vegetable, Fail>(),
+  extendTypeOf<typeof apple, EVegetable, Fail>(),
 );
 
 /* typed instances should be exclusive */
@@ -56,19 +56,19 @@ checks(
  * remove @ts-ignore directive of following test case
  * after implementing the feature
  */
-(function exhaustive(f: Fruit) {
-  if (f === Fruit.Apple && f === Fruit.Pear) {
+(function exhaustive(f: EFruit) {
+  if (f === EFruit.Apple && f === EFruit.Pear) {
     type T1 = typeof f;
     // @ts-ignore
     checks(equal<T1, never>());
   }
 
   switch (f) {
-    case Fruit.Apple:
+    case EFruit.Apple:
       return 'foo';
-    case Fruit.Pear:
+    case EFruit.Pear:
       return 'bar';
-    case Fruit.Strawberry:
+    case EFruit.Strawberry:
       return 'baz';
     default:
       type T2 = typeof f;
@@ -78,27 +78,27 @@ checks(
   }
 }(pear));
 
-(function isTypeGuard(f: Fruit) {
-  if (f.is(Fruit.Strawberry)) {
+(function isTypeGuard(f: EFruit) {
+  if (f.is(EFruit.Strawberry)) {
     type T1 = typeof f;
-    checks(equal<T1, typeof Fruit.Strawberry>());
+    checks(equal<T1, typeof EFruit.Strawberry>());
   }
 
-  if (f.is(Fruit.Apple) && f.is(Fruit.Pear)) {
+  if (f.is(EFruit.Apple) && f.is(EFruit.Pear)) {
     type T2 = typeof f;
     checks(extendTypeOf<T2, never>());
   }
 
-  if (f.isNot(Fruit.Strawberry)) {
+  if (f.isNot(EFruit.Strawberry)) {
     type T3 = typeof f;
     checks(
-      extendTypeOf<typeof Fruit.Apple, T3>(),
-      extendTypeOf<typeof Fruit.Pear, T3>(),
-      extendTypeOf<typeof Fruit.Strawberry, T3, Fail>(),
+      extendTypeOf<typeof EFruit.Apple, T3>(),
+      extendTypeOf<typeof EFruit.Pear, T3>(),
+      extendTypeOf<typeof EFruit.Strawberry, T3, Fail>(),
     );
   }
 
-  if (f.is(Fruit.Apple) && f.isNot(Fruit.Apple)) {
+  if (f.is(EFruit.Apple) && f.isNot(EFruit.Apple)) {
     type T4 = typeof f;
     checks(extendTypeOf<T4, never>());
   }
