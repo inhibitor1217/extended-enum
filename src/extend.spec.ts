@@ -2,143 +2,143 @@
 
 import extend from './extend';
 
-enum FruitP {
+enum Fruit {
   Apple = 'apple',
   Pear = 'pear',
   Strawberry = 'strawberry',
 }
 
-enum AnimalP {
+enum Animal {
   Cat,
   Dog,
   Elephant,
   Fox,
 }
 
-enum OsP {
+enum Os {
   Windows,
   MacOS,
   iOS = 'iOS',
   Android = 'android',
 }
 
-enum EmptyP {}
+enum Empty {}
 
-class Fruit extends extend<typeof FruitP, FruitP>(FruitP) {}
-class Animal extends extend<typeof AnimalP, AnimalP>(AnimalP) {}
-class Os extends extend<typeof OsP, OsP>(OsP) {}
-class Empty extends extend<typeof EmptyP, EmptyP>(EmptyP) {}
+class EFruit extends extend<typeof Fruit, Fruit>(Fruit) {}
+class EAnimal extends extend<typeof Animal, Animal>(Animal) {}
+class EOs extends extend<typeof Os, Os>(Os) {}
+class EEmpty extends extend<typeof Empty, Empty>(Empty) {}
 
 describe('static of()', () => {
   it('should not fail', () => {
-    expect(() => Fruit.of(FruitP.Pear)).not.toThrow();
-    expect(() => Animal.of(AnimalP.Cat)).not.toThrow();
-    expect(() => Os.of(OsP.MacOS)).not.toThrow();
+    expect(() => EFruit.of(Fruit.Pear)).not.toThrow();
+    expect(() => EAnimal.of(Animal.Cat)).not.toThrow();
+    expect(() => EOs.of(Os.MacOS)).not.toThrow();
   });
 
   it('should return same instance from same primitive', () => {
-    expect(Fruit.of(FruitP.Apple)).toBe(Fruit.of(FruitP.Apple));
-    expect(Animal.of(AnimalP.Elephant)).toBe(Animal.of(AnimalP.Elephant));
-    expect(Os.of(OsP.Windows)).toBe(Os.of(OsP.Windows));
+    expect(EFruit.of(Fruit.Apple)).toBe(EFruit.of(Fruit.Apple));
+    expect(EAnimal.of(Animal.Elephant)).toBe(EAnimal.of(Animal.Elephant));
+    expect(EOs.of(Os.Windows)).toBe(EOs.of(Os.Windows));
   });
 
   it('should return instance different from instances of other primitives', () => {
-    expect(Fruit.of(FruitP.Strawberry)).not.toBe(Fruit.of(FruitP.Apple));
-    expect(Animal.of(AnimalP.Cat)).not.toBe(Animal.of(AnimalP.Fox));
-    expect(Os.of(OsP.iOS)).not.toBe(Os.of(OsP.Android));
+    expect(EFruit.of(Fruit.Strawberry)).not.toBe(EFruit.of(Fruit.Apple));
+    expect(EAnimal.of(Animal.Cat)).not.toBe(EAnimal.of(Animal.Fox));
+    expect(EOs.of(Os.iOS)).not.toBe(EOs.of(Os.Android));
   });
 
   it('should fail if called with value not defined at original enumeration', () => {
     // @ts-ignore
-    expect(() => Fruit.of('APPLE')).toThrow();
+    expect(() => EFruit.of('APPLE')).toThrow();
 
     // @ts-ignore
-    expect(() => Animal.of(-1)).toThrow();
+    expect(() => EAnimal.of(-1)).toThrow();
   });
 });
 
 describe('static from()', () => {
   it('should not fail', () => {
-    expect(() => Fruit.from('apple')).not.toThrow();
-    expect(() => Fruit.from('orange')).not.toThrow();
-    expect(() => Fruit.from('orange', FruitP.Pear)).not.toThrow();
+    expect(() => EFruit.from('apple')).not.toThrow();
+    expect(() => EFruit.from('orange')).not.toThrow();
+    expect(() => EFruit.from('orange', Fruit.Pear)).not.toThrow();
   });
 
   it('should parse if given primitive is one of specified values', () => {
-    expect(Animal.from(0)).toBe(Animal.of(AnimalP.Cat));
-    expect(Os.from('iOS')).toBe(Os.of(OsP.iOS));
-    expect(Animal.from(3)).toBe(Animal.of(AnimalP.Fox));
+    expect(EAnimal.from(0)).toBe(EAnimal.of(Animal.Cat));
+    expect(EOs.from('iOS')).toBe(EOs.of(Os.iOS));
+    expect(EAnimal.from(3)).toBe(EAnimal.of(Animal.Fox));
   });
 
   it('should return undefined if no fallback is given, and given primitive is not among specified values', () => {
-    expect(Animal.from(-1)).toBe(undefined);
-    expect(Animal.from('hello')).toBe(undefined);
-    expect(Animal.from('Cat')).toBe(undefined);
-    expect(Fruit.from('Apple')).toBe(undefined);
-    expect(Fruit.from('orange')).toBe(undefined);
-    expect(Os.from('ubuntu')).toBe(undefined);
-    expect(Empty.from('')).toBe(undefined);
-    expect(Empty.from(undefined)).toBe(undefined);
+    expect(EAnimal.from(-1)).toBe(undefined);
+    expect(EAnimal.from('hello')).toBe(undefined);
+    expect(EAnimal.from('Cat')).toBe(undefined);
+    expect(EFruit.from('Apple')).toBe(undefined);
+    expect(EFruit.from('orange')).toBe(undefined);
+    expect(EOs.from('ubuntu')).toBe(undefined);
+    expect(EEmpty.from('')).toBe(undefined);
+    expect(EEmpty.from(undefined)).toBe(undefined);
   });
 
   it('should return fallback if it is specified, and given primitive is not among specified values', () => {
-    expect(Animal.from(-1, AnimalP.Cat)).toBe(Animal.of(AnimalP.Cat));
-    expect(Animal.from('hello', AnimalP.Dog)).toBe(Animal.of(AnimalP.Dog));
-    expect(Animal.from('Cat', AnimalP.Elephant)).toBe(Animal.of(AnimalP.Elephant));
-    expect(Fruit.from('Apple', FruitP.Strawberry)).toBe(Fruit.of(FruitP.Strawberry));
-    expect(Fruit.from('orange', FruitP.Apple)).toBe(Fruit.of(FruitP.Apple));
-    expect(Os.from('ubuntu', OsP.Windows)).toBe(Os.of(OsP.Windows));
+    expect(EAnimal.from(-1, Animal.Cat)).toBe(EAnimal.of(Animal.Cat));
+    expect(EAnimal.from('hello', Animal.Dog)).toBe(EAnimal.of(Animal.Dog));
+    expect(EAnimal.from('Cat', Animal.Elephant)).toBe(EAnimal.of(Animal.Elephant));
+    expect(EFruit.from('Apple', Fruit.Strawberry)).toBe(EFruit.of(Fruit.Strawberry));
+    expect(EFruit.from('orange', Fruit.Apple)).toBe(EFruit.of(Fruit.Apple));
+    expect(EOs.from('ubuntu', Os.Windows)).toBe(EOs.of(Os.Windows));
   });
 });
 
 describe('static keys()', () => {
   it('should return keys excluding reverse mapped keys, in definition order', () => {
-    expect([...Fruit.keys()]).toEqual(['Apple', 'Pear', 'Strawberry']);
-    expect([...Animal.keys()]).toEqual(['Cat', 'Dog', 'Elephant', 'Fox']);
-    expect([...Os.keys()]).toEqual(['Windows', 'MacOS', 'iOS', 'Android']);
-    expect([...Empty.keys()]).toEqual([]);
+    expect([...EFruit.keys()]).toEqual(['Apple', 'Pear', 'Strawberry']);
+    expect([...EAnimal.keys()]).toEqual(['Cat', 'Dog', 'Elephant', 'Fox']);
+    expect([...EOs.keys()]).toEqual(['Windows', 'MacOS', 'iOS', 'Android']);
+    expect([...EEmpty.keys()]).toEqual([]);
   });
 });
 
 describe('static values()', () => {
   it('should return all instances, in definition order', () => {
-    expect([...Fruit.values()])
+    expect([...EFruit.values()])
       .toEqual([
-        Fruit.of(FruitP.Apple),
-        Fruit.of(FruitP.Pear),
-        Fruit.of(FruitP.Strawberry),
+        EFruit.of(Fruit.Apple),
+        EFruit.of(Fruit.Pear),
+        EFruit.of(Fruit.Strawberry),
       ]);
 
-    expect([...Animal.values()])
+    expect([...EAnimal.values()])
       .toEqual([
-        Animal.of(AnimalP.Cat),
-        Animal.of(AnimalP.Dog),
-        Animal.of(AnimalP.Elephant),
-        Animal.of(AnimalP.Fox),
+        EAnimal.of(Animal.Cat),
+        EAnimal.of(Animal.Dog),
+        EAnimal.of(Animal.Elephant),
+        EAnimal.of(Animal.Fox),
       ]);
 
-    expect([...Os.values()])
+    expect([...EOs.values()])
       .toEqual([
-        Os.of(OsP.Windows),
-        Os.of(OsP.MacOS),
-        Os.of(OsP.iOS),
-        Os.of(OsP.Android),
+        EOs.of(Os.Windows),
+        EOs.of(Os.MacOS),
+        EOs.of(Os.iOS),
+        EOs.of(Os.Android),
       ]);
 
-    expect([...Empty.values()]).toEqual([]);
+    expect([...EEmpty.values()]).toEqual([]);
   });
 });
 
 describe('static rawValues()', () => {
   it('should return all primitives, in definition order', () => {
-    expect([...Fruit.rawValues()])
+    expect([...EFruit.rawValues()])
       .toEqual([
         'apple',
         'pear',
         'strawberry',
       ]);
 
-    expect([...Animal.rawValues()])
+    expect([...EAnimal.rawValues()])
       .toEqual([
         0,
         1,
@@ -146,7 +146,7 @@ describe('static rawValues()', () => {
         3,
       ]);
 
-    expect([...Os.rawValues()])
+    expect([...EOs.rawValues()])
       .toEqual([
         0,
         1,
@@ -154,135 +154,135 @@ describe('static rawValues()', () => {
         'android',
       ]);
 
-    expect([...Empty.rawValues()])
+    expect([...EEmpty.rawValues()])
       .toEqual([]);
   });
 });
 
 describe('static entries()', () => {
   it('should return tuples of key and instance, in definition order', () => {
-    expect([...Fruit.entries()])
+    expect([...EFruit.entries()])
       .toEqual([
-        ['Apple', Fruit.of(FruitP.Apple)],
-        ['Pear', Fruit.of(FruitP.Pear)],
-        ['Strawberry', Fruit.of(FruitP.Strawberry)],
+        ['Apple', EFruit.of(Fruit.Apple)],
+        ['Pear', EFruit.of(Fruit.Pear)],
+        ['Strawberry', EFruit.of(Fruit.Strawberry)],
       ]);
 
-    expect([...Animal.entries()])
+    expect([...EAnimal.entries()])
       .toEqual([
-        ['Cat', Animal.of(AnimalP.Cat)],
-        ['Dog', Animal.of(AnimalP.Dog)],
-        ['Elephant', Animal.of(AnimalP.Elephant)],
-        ['Fox', Animal.of(AnimalP.Fox)],
+        ['Cat', EAnimal.of(Animal.Cat)],
+        ['Dog', EAnimal.of(Animal.Dog)],
+        ['Elephant', EAnimal.of(Animal.Elephant)],
+        ['Fox', EAnimal.of(Animal.Fox)],
       ]);
 
-    expect([...Os.entries()])
+    expect([...EOs.entries()])
       .toEqual([
-        ['Windows', Os.of(OsP.Windows)],
-        ['MacOS', Os.of(OsP.MacOS)],
-        ['iOS', Os.of(OsP.iOS)],
-        ['Android', Os.of(OsP.Android)],
+        ['Windows', EOs.of(Os.Windows)],
+        ['MacOS', EOs.of(Os.MacOS)],
+        ['iOS', EOs.of(Os.iOS)],
+        ['Android', EOs.of(Os.Android)],
       ]);
 
-    expect([...Empty.entries()])
+    expect([...EEmpty.entries()])
       .toEqual([]);
   });
 });
 
 describe('static [Symbol.iterator]()', () => {
   it('should be iterable', () => {
-    expect([...Fruit])
+    expect([...EFruit])
       .toEqual([
-        Fruit.of(FruitP.Apple),
-        Fruit.of(FruitP.Pear),
-        Fruit.of(FruitP.Strawberry),
+        EFruit.of(Fruit.Apple),
+        EFruit.of(Fruit.Pear),
+        EFruit.of(Fruit.Strawberry),
       ]);
 
-    expect([...Animal])
+    expect([...EAnimal])
       .toEqual([
-        Animal.of(AnimalP.Cat),
-        Animal.of(AnimalP.Dog),
-        Animal.of(AnimalP.Elephant),
-        Animal.of(AnimalP.Fox),
+        EAnimal.of(Animal.Cat),
+        EAnimal.of(Animal.Dog),
+        EAnimal.of(Animal.Elephant),
+        EAnimal.of(Animal.Fox),
       ]);
 
-    expect([...Os])
+    expect([...EOs])
       .toEqual([
-        Os.of(OsP.Windows),
-        Os.of(OsP.MacOS),
-        Os.of(OsP.iOS),
-        Os.of(OsP.Android),
+        EOs.of(Os.Windows),
+        EOs.of(Os.MacOS),
+        EOs.of(Os.iOS),
+        EOs.of(Os.Android),
       ]);
 
-    expect([...Empty])
+    expect([...EEmpty])
       .toEqual([]);
   });
 });
 
 describe('is', () => {
   it('should work with primitives', () => {
-    expect(Fruit.of(FruitP.Apple).is('apple')).toBe(true);
-    expect(Fruit.of(FruitP.Apple).is('Apple')).toBe(false);
-    expect(Fruit.of(FruitP.Apple).is('pear')).toBe(false);
-    expect(Animal.of(AnimalP.Fox).is(3)).toBe(true);
-    expect(Animal.of(AnimalP.Fox).is('Fox')).toBe(false);
-    expect(Animal.of(AnimalP.Fox).is('fox')).toBe(false);
-    expect(Animal.of(AnimalP.Fox).is(AnimalP.Fox)).toBe(true);
-    expect(Animal.of(AnimalP.Fox).is(AnimalP.Dog)).toBe(false);
+    expect(EFruit.of(Fruit.Apple).is('apple')).toBe(true);
+    expect(EFruit.of(Fruit.Apple).is('Apple')).toBe(false);
+    expect(EFruit.of(Fruit.Apple).is('pear')).toBe(false);
+    expect(EAnimal.of(Animal.Fox).is(3)).toBe(true);
+    expect(EAnimal.of(Animal.Fox).is('Fox')).toBe(false);
+    expect(EAnimal.of(Animal.Fox).is('fox')).toBe(false);
+    expect(EAnimal.of(Animal.Fox).is(Animal.Fox)).toBe(true);
+    expect(EAnimal.of(Animal.Fox).is(Animal.Dog)).toBe(false);
   });
 
   it('should work with instances', () => {
-    expect(Os.of(OsP.Android).is(Os.of(OsP.Android))).toBe(true);
-    expect(Os.of(OsP.Android).is(Os.of(OsP.iOS))).toBe(false);
+    expect(EOs.of(Os.Android).is(EOs.of(Os.Android))).toBe(true);
+    expect(EOs.of(Os.Android).is(EOs.of(Os.iOS))).toBe(false);
   });
 });
 
 describe('isNot', () => {
   it('should work with primitives', () => {
-    expect(Fruit.of(FruitP.Apple).isNot('apple')).toBe(false);
-    expect(Fruit.of(FruitP.Apple).isNot('Apple')).toBe(true);
-    expect(Fruit.of(FruitP.Apple).isNot('pear')).toBe(true);
-    expect(Animal.of(AnimalP.Fox).isNot(3)).toBe(false);
-    expect(Animal.of(AnimalP.Fox).isNot('Fox')).toBe(true);
-    expect(Animal.of(AnimalP.Fox).isNot('fox')).toBe(true);
-    expect(Animal.of(AnimalP.Fox).isNot(AnimalP.Fox)).toBe(false);
-    expect(Animal.of(AnimalP.Fox).isNot(AnimalP.Dog)).toBe(true);
+    expect(EFruit.of(Fruit.Apple).isNot('apple')).toBe(false);
+    expect(EFruit.of(Fruit.Apple).isNot('Apple')).toBe(true);
+    expect(EFruit.of(Fruit.Apple).isNot('pear')).toBe(true);
+    expect(EAnimal.of(Animal.Fox).isNot(3)).toBe(false);
+    expect(EAnimal.of(Animal.Fox).isNot('Fox')).toBe(true);
+    expect(EAnimal.of(Animal.Fox).isNot('fox')).toBe(true);
+    expect(EAnimal.of(Animal.Fox).isNot(Animal.Fox)).toBe(false);
+    expect(EAnimal.of(Animal.Fox).isNot(Animal.Dog)).toBe(true);
   });
 
   it('should work with instances', () => {
-    expect(Os.of(OsP.Android).isNot(Os.of(OsP.Android))).toBe(false);
-    expect(Os.of(OsP.Android).isNot(Os.of(OsP.iOS))).toBe(true);
+    expect(EOs.of(Os.Android).isNot(EOs.of(Os.Android))).toBe(false);
+    expect(EOs.of(Os.Android).isNot(EOs.of(Os.iOS))).toBe(true);
   });
 });
 
 describe('keyOf', () => {
   it('should return a key associated with given instance', () => {
-    expect(Fruit.of(FruitP.Strawberry).keyOf()).toBe('Strawberry');
-    expect(Fruit.Apple.keyOf()).toBe('Apple');
-    expect(Os.iOS.keyOf()).toBe('iOS');
+    expect(EFruit.of(Fruit.Strawberry).keyOf()).toBe('Strawberry');
+    expect(EFruit.Apple.keyOf()).toBe('Apple');
+    expect(EOs.iOS.keyOf()).toBe('iOS');
   });
 });
 
 describe('valueOf', () => {
   it('should return a primitive associated with given instance', () => {
-    expect(Fruit.of(FruitP.Pear).valueOf()).toBe('pear');
-    expect(Animal.of(AnimalP.Elephant).valueOf()).toBe(2);
-    expect(Os.of(OsP.MacOS).valueOf()).toBe(1);
-    expect(Os.of(OsP.Android).valueOf()).toBe('android');
+    expect(EFruit.of(Fruit.Pear).valueOf()).toBe('pear');
+    expect(EAnimal.of(Animal.Elephant).valueOf()).toBe(2);
+    expect(EOs.of(Os.MacOS).valueOf()).toBe(1);
+    expect(EOs.of(Os.Android).valueOf()).toBe('android');
   });
 });
 
 describe('toString', () => {
   it('should return string', () => {
-    expect(typeof Fruit.of(FruitP.Apple).toString()).toBe('string');
-    expect(typeof Animal.of(AnimalP.Dog).toString()).toBe('string');
-    expect(typeof Os.of(OsP.Windows).toString()).toBe('string');
+    expect(typeof EFruit.of(Fruit.Apple).toString()).toBe('string');
+    expect(typeof EAnimal.of(Animal.Dog).toString()).toBe('string');
+    expect(typeof EOs.of(Os.Windows).toString()).toBe('string');
   });
 
   it('should return primitive, or a stringified of primitive if it is number', () => {
-    expect(Fruit.of(FruitP.Apple).toString()).toBe('apple');
-    expect(Animal.of(AnimalP.Dog).toString()).toBe('1');
-    expect(Os.of(OsP.Windows).toString()).toBe('0');
+    expect(EFruit.of(Fruit.Apple).toString()).toBe('apple');
+    expect(EAnimal.of(Animal.Dog).toString()).toBe('1');
+    expect(EOs.of(Os.Windows).toString()).toBe('0');
   });
 });
 
@@ -291,15 +291,15 @@ describe('toJSON', () => {
     const obj = {
       foo: {
         bar: {
-          animal: Animal.of(AnimalP.Cat),
+          animal: EAnimal.of(Animal.Cat),
         },
       },
       fruits: [
-        Fruit.of(FruitP.Strawberry),
-        Fruit.of(FruitP.Pear),
+        EFruit.of(Fruit.Strawberry),
+        EFruit.of(Fruit.Pear),
       ],
-      desktop: Os.of(OsP.MacOS),
-      mobile: Os.of(OsP.iOS),
+      desktop: EOs.of(Os.MacOS),
+      mobile: EOs.of(Os.iOS),
     };
 
     expect(JSON.stringify(obj)).toBe('{"foo":{"bar":{"animal":0}},"fruits":["strawberry","pear"],"desktop":1,"mobile":"iOS"}');
@@ -308,44 +308,44 @@ describe('toJSON', () => {
 
 describe('key accessors', () => {
   it('returns correct instaces', () => {
-    expect(Fruit.Apple.valueOf()).toBe('apple');
-    expect(Animal.Dog.valueOf()).toBe(1);
-    expect(Os.iOS.valueOf()).toBe('iOS');
+    expect(EFruit.Apple.valueOf()).toBe('apple');
+    expect(EAnimal.Dog.valueOf()).toBe(1);
+    expect(EOs.iOS.valueOf()).toBe('iOS');
 
-    expect(Fruit.Apple.is(Fruit.Apple)).toBe(true);
-    expect(Fruit.Apple.isNot(Fruit.Pear)).toBe(true);
-    expect(Animal.Cat.is(AnimalP.Cat)).toBe(true);
-    expect(Animal.Cat.is(0)).toBe(true);
-    expect(Animal.Cat.is(Animal.of(AnimalP.Cat))).toBe(true);
-    expect(Animal.Cat.is(Animal.Dog)).toBe(false);
-    expect(Animal.Cat.isNot(Animal.Fox)).toBe(true);
+    expect(EFruit.Apple.is(EFruit.Apple)).toBe(true);
+    expect(EFruit.Apple.isNot(EFruit.Pear)).toBe(true);
+    expect(EAnimal.Cat.is(Animal.Cat)).toBe(true);
+    expect(EAnimal.Cat.is(0)).toBe(true);
+    expect(EAnimal.Cat.is(EAnimal.of(Animal.Cat))).toBe(true);
+    expect(EAnimal.Cat.is(EAnimal.Dog)).toBe(false);
+    expect(EAnimal.Cat.isNot(EAnimal.Fox)).toBe(true);
   });
 
   it('returns the same instance with using "of"', () => {
-    expect(Fruit.Strawberry).toBe(Fruit.of(FruitP.Strawberry));
-    expect(Animal.Dog).toBe(Animal.of(AnimalP.Dog));
+    expect(EFruit.Strawberry).toBe(EFruit.of(Fruit.Strawberry));
+    expect(EAnimal.Dog).toBe(EAnimal.of(Animal.Dog));
   });
 });
 
 describe('static keyOf()', () => {
   it('should return a key associated with given primitive', () => {
-    expect(Fruit.keyOf(FruitP.Pear)).toBe('Pear');
-    expect(Animal.keyOf(2)).toBe('Elephant');
-    expect(Os.keyOf(OsP.Android)).toBe('Android');
+    expect(EFruit.keyOf(Fruit.Pear)).toBe('Pear');
+    expect(EAnimal.keyOf(2)).toBe('Elephant');
+    expect(EOs.keyOf(Os.Android)).toBe('Android');
   });
 
   it('should return a key associated with given instance', () => {
-    expect(Fruit.keyOf(Fruit.Strawberry)).toBe('Strawberry');
-    expect(Animal.keyOf(Animal.Fox)).toBe('Fox');
-    expect(Os.keyOf(Os.MacOS)).toBe('MacOS');
+    expect(EFruit.keyOf(EFruit.Strawberry)).toBe('Strawberry');
+    expect(EAnimal.keyOf(EAnimal.Fox)).toBe('Fox');
+    expect(EOs.keyOf(EOs.MacOS)).toBe('MacOS');
   });
 });
 
 describe('false constructor', () => {
   it('should throw', () => {
-    expect(() => new Fruit()).toThrow();
-    expect(() => new Animal()).toThrow();
-    expect(() => new Os()).toThrow();
-    expect(() => new Empty()).toThrow();
+    expect(() => new EFruit()).toThrow();
+    expect(() => new EAnimal()).toThrow();
+    expect(() => new EOs()).toThrow();
+    expect(() => new EEmpty()).toThrow();
   });
 });
