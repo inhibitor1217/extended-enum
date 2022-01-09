@@ -20,12 +20,6 @@ checks(
   equal<ReturnType<typeof apple.is>, boolean>(),
 );
 
-/* is.not */
-checks(
-  extendTypeOf<typeof apple.is.not, Function>(),
-  equal<ReturnType<typeof apple.is.not>, boolean>(),
-);
-
 declare const fruit: ExtendedEnum<typeof FruitP, FruitP>;
 
 const keyOfFruit = Fruit.keyOf(fruit);
