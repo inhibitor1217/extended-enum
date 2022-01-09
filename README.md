@@ -212,7 +212,7 @@ Further extending default extended enumeration class is also possible. You may a
 class Pets extends extend<typeof _Animal, _Animal>(_Animal) {
 
   get walks(): boolean {
-    return this.is.not(Pets.Bird);
+    return this.isNot(Pets.Bird);
   }
 
 }
