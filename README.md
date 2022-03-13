@@ -13,6 +13,18 @@ npm i extended-enum@latest
 yarn add extended-enum@latest
 ```
 
+### Peer dependencies
+
+This project requires `typescript@4.6.0` or higher. Install peer dependencies via:
+
+```sh
+# NPM
+npm i -D typescript@^4.6.0
+
+# Yarn
+yarn add -D typescript@^4.6.0
+```
+
 ## How to use it?
 
 `extended-enum` exposes a utility function named `extend`. Simply wrap an enum with `extend`, then you are ready to go!
