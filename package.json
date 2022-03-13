@@ -8,7 +8,7 @@
       "require": "./dist/cjs/index.js"
     }
   },
-  "version": "0.3.2",
+  "version": "0.3.4",
   "description": "An extension to grant java-like powers to typescript enums",
   "author": "inhibitor <inhibitor@kaist.ac.kr>",
   "license": "MIT",
