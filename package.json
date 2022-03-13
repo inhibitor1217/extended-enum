@@ -63,5 +63,8 @@
   },
   "dependencies": {
     "@fxts/core": "^0.5.0"
+  },
+  "peerDependencies": {
+    "typescript": "^4.6.0"
   }
 }
