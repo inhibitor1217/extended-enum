@@ -38,7 +38,7 @@
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "babel-jest": "^27.4.2",
-    "chalk": "^4.1.2",
+    "chalk": "^5.0.1",
     "eslint": "^8.2.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-airbnb-typescript": "^16.1.0",
