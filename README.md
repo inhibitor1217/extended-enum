@@ -15,14 +15,14 @@ yarn add extended-enum@latest
 
 ### Peer dependencies
 
-This project requires `typescript@4.6.0` or higher. Install peer dependencies via:
+This project requires `typescript@4.1.2` or higher. Install peer dependencies via:
 
 ```sh
 # NPM
-npm i -D typescript@^4.6.0
+npm i -D typescript@^4.1.2
 
 # Yarn
-yarn add -D typescript@^4.6.0
+yarn add -D typescript@^4.1.2
 ```
 
 ## How to use it?
