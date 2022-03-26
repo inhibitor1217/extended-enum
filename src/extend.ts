@@ -67,7 +67,8 @@ function instance<
 const extend = <
   E extends Enum,
   V extends Primitive,
->(enumObj: E): ExtendedEnumStatic<E, V> => {
+  M,
+>(enumObj: E): ExtendedEnumStatic<E, V, M> => {
   const isStringKey = (key: string) => Number.isNaN(parseInt(key, 10));
 
   const keys = (): Iterable<Keys<E>> => Object.getOwnPropertyNames(enumObj).filter(isStringKey);
@@ -87,9 +88,9 @@ const extend = <
 
   const instances = new Map<Keys<E>, ExtendedEnum<E, V>>();
   function memoizedInstance<K extends Keys<E>>(
-    this: ExtendedEnumStatic<E, V>,
+    this: ExtendedEnumStatic<E, V, M>,
     key: K,
-  ): ExtendedEnumMapping<E, V>[K] {
+  ): ExtendedEnumMapping<E, V, M>[K] {
     if (instances.has(key)) { return cast(instances.get(key)!); }
 
     /**
@@ -109,7 +110,7 @@ const extend = <
   }
 
   function reverseMap(
-    this: ExtendedEnumStatic<E, V>,
+    this: ExtendedEnumStatic<E, V, M>,
     value: V,
   ): Keys<E> {
     const found = find((key) => memoizedInstance.call(this, key).is(value), keys());
@@ -122,14 +123,14 @@ const extend = <
   }
 
   function of(
-    this: ExtendedEnumStatic<E, V>,
+    this: ExtendedEnumStatic<E, V, M>,
     value: V,
   ): ExtendedEnum<E, V> {
     return memoizedInstance.call(this, reverseMap.call(this, value));
   }
 
   function keyOf(
-    this: ExtendedEnumStatic<E, V>,
+    this: ExtendedEnumStatic<E, V, M>,
     value: V | ExtendedEnum<E, V>,
   ): Keys<E> {
     return reverseMap.call(
@@ -139,7 +140,7 @@ const extend = <
   }
 
   function values(
-    this: ExtendedEnumStatic<E, V>,
+    this: ExtendedEnumStatic<E, V, M>,
   ): Iterable<ExtendedEnum<E, V>> {
     return pipe(
       rawValues(),
@@ -149,13 +150,13 @@ const extend = <
   }
 
   function entries(
-    this: ExtendedEnumStatic<E, V>,
+    this: ExtendedEnumStatic<E, V, M>,
   ): Iterable<[Keys<E>, ExtendedEnum<E, V>]> {
     return zip(keys(), this.values());
   }
 
   function from(
-    this: ExtendedEnumStatic<E, V>,
+    this: ExtendedEnumStatic<E, V, M>,
     value: string | number | undefined,
     fallback?: V,
   ): ExtendedEnum<E, V> | undefined {
@@ -169,7 +170,7 @@ const extend = <
   }
 
   function valuesIter(
-    this: ExtendedEnumStatic<E, V>,
+    this: ExtendedEnumStatic<E, V, M>,
   ): Iterator<ExtendedEnum<E, V>> {
     return this.values()[Symbol.iterator]();
   }
@@ -178,7 +179,7 @@ const extend = <
     keys(),
     map(toEntry((key) => ({
       get(
-        this: ExtendedEnumStatic<E, V>,
+        this: ExtendedEnumStatic<E, V, M>,
       ) { return memoizedInstance.call(this, key); },
     }))),
     fromEntries,
@@ -196,13 +197,14 @@ const extend = <
       [Symbol.iterator]: valuesIter,
     },
     instanceDescriptors,
-  ) as ExtendedEnumStatic<E, V>;
+  ) as ExtendedEnumStatic<E, V, M>;
 };
 
 const extendWithFalseConstructor = <
   E extends Enum,
   V extends Primitive,
->(enumObj: E): ExtendedEnumStatic<E, V> => {
+  M = {},
+>(enumObj: E): ExtendedEnumStatic<E, V, M> => {
   /**
    * @remarks
    *
