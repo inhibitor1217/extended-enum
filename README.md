@@ -215,19 +215,25 @@ fruit.match([
 
 ### Inheriting extended enumerations
 
-> WIP (coming in v0.4.0)
-
-Further extending default extended enumeration class is also possible. You may add more querying methods (modifying internal state of the instance is not encouraged), or override existing core methods such as `is` or `from` to customize the default behavior.
+Further extending default extended enumeration class is also possible. You may add more methods, or override existing core methods such as `is` or `from` to customize the default behavior.
 
 ```typescript
-// you may add more querying methods to extend enumerations
-class EPets extends extend<typeof Animal, Animal>(Animal) {
+// define the extended interface
+interface IPet {
+  readonly walks: boolean
+}
+
+// you may add more methods to extend enumerations
+class EPets extends extend<typeof Animal, Animal, IPet>(Animal) {
 
   get walks(): boolean {
     return this.isNot(EPets.Bird);
   }
 
 }
+
+EPets.Cat.walks  // true
+EPets.Bird.walks // false
 ```
 
 ## API Documentation
