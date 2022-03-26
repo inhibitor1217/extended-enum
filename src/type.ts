@@ -146,11 +146,11 @@ type ExtendedEnumOfKey<E extends Enum, V extends Primitive, K extends Keys<E>> =
 
 export type ExtendedEnum<E extends Enum, V extends Primitive> = ExtendedEnumOfKey<E, V, Keys<E>>;
 
-export type ExtendedEnumMapping<E extends Enum, V extends Primitive> = {
-  [K in Keys<E>]: ExtendedEnumOfKey<E, V, K>;
+export type ExtendedEnumMapping<E extends Enum, V extends Primitive, M> = {
+  [K in Keys<E>]: ExtendedEnumOfKey<E, V, K> & M;
 };
 
-type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
+type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive, M> = {
   /**
    * `of` returns an instance of extended enumeration with given primitive.
    *
@@ -171,9 +171,9 @@ type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
    * ```
    */
   of(
-    this: ExtendedEnumStatic<E, V>,
+    this: ExtendedEnumStatic<E, V, M>,
     value: V,
-  ): ExtendedEnum<E, V>;
+  ): ExtendedEnum<E, V> & M;
 
   /**
    * `from` returns an instance of extended enumeration with given value.
@@ -195,14 +195,14 @@ type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
    * ```
    */
   from(
-    this: ExtendedEnumStatic<E, V>,
+    this: ExtendedEnumStatic<E, V, M>,
     value: string | number | undefined,
-  ): ExtendedEnum<E, V> | undefined;
+  ): ExtendedEnum<E, V> & M | undefined;
   from(
-    this: ExtendedEnumStatic<E, V>,
+    this: ExtendedEnumStatic<E, V, M>,
     value: string | number | undefined,
     fallback: V,
-  ): ExtendedEnum<E, V>;
+  ): ExtendedEnum<E, V> & M;
 
   /**
    * Returns an iterable of defined keys.
@@ -262,7 +262,7 @@ type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
    * @see rawValues
    * @see entries
    */
-  values(this: ExtendedEnumStatic<E, V>): Iterable<ExtendedEnum<E, V>>;
+  values(this: ExtendedEnumStatic<E, V, M>): Iterable<ExtendedEnum<E, V> & M>;
 
   /**
    * Returns an iterable of tuple `[key, instance]`.
@@ -284,8 +284,8 @@ type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
    * @see values
    */
   entries(
-    this: ExtendedEnumStatic<E, V>,
-  ): Iterable<[Keys<E>, ExtendedEnum<E, V>]>;
+    this: ExtendedEnumStatic<E, V, M>,
+  ): Iterable<[Keys<E>, ExtendedEnum<E, V> & M]>;
 
   /**
    * `keyOf` corresponds to the reverse mapping feature
@@ -318,10 +318,10 @@ type ExtendedEnumStaticMethods<E extends Enum, V extends Primitive> = {
   keyOf<K extends Keys<E>>(value: ExtendedEnumOfKey<E, V, K>): K;
 };
 
-export type ExtendedEnumStatic<E extends Enum, V extends Primitive> =
-  & Iterable<ExtendedEnum<E, V>>
-  & ExtendedEnumMapping<E, V>
-  & ExtendedEnumStaticMethods<E, V>
+export type ExtendedEnumStatic<E extends Enum, V extends Primitive, M = {}> =
+  & Iterable<ExtendedEnum<E, V> & M>
+  & ExtendedEnumMapping<E, V, M>
+  & ExtendedEnumStaticMethods<E, V, M>
   & {
     /**
      * @deprecated The constructor is not actually implemented.
@@ -331,5 +331,5 @@ export type ExtendedEnumStatic<E extends Enum, V extends Primitive> =
      *
      * If the constructor is actually invoked, it will throw an error.
      */
-    new (): ExtendedEnum<E, V>
+    new (): ExtendedEnum<E, V> & M
   };
