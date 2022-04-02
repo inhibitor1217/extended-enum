@@ -1,4 +1,6 @@
-<h1 align="center">extended-enum</h1>
+<a href="https://inhibitor1217.github.io/extended-enum">
+  <h1 align="center">extended-enum</h1>
+</a>
 <h4 align="center">An extension for TypeScript enums to grant object-oriented powers</h4>
 
 ## Installation
@@ -238,11 +240,11 @@ EPets.Bird.walks // false
 
 ## API Documentation
 
-> WIP
+See [website](https://inhibitor1217.github.io/extended-enum/).
 
 ## Contribution
 
-> WIP
+Feel free to open issues in GitHub for bug reports or feature requests!
 
 ## LICENSE
 
