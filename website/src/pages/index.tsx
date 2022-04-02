@@ -35,7 +35,7 @@ export default function Home(): JSX.Element {
           <div className="col col--2" />
           <div className="col col--8">
             <p>
-              Extend your TypeScript <code>enum</code> with magic utility, <b><code>extend</code></b>.
+              Extend your TypeScript <code>enum</code> with magic utility, <b><code>extend</code> ✨</b>.
             </p>
             <CodeBlock language="ts">
               {`import { extend } from 'extended-enum';
