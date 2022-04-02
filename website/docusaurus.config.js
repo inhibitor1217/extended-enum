@@ -43,13 +43,12 @@ const config = {
           src: 'img/logo.png',
         },
         items: [
-          /* TODO - Add navbar items */
-          // {
-          //   type: 'doc',
-          //   docId: 'intro',
-          //   position: 'left',
-          //   label: 'Tutorial',
-          // },
+          {
+            type: 'doc',
+            docId: 'get-started',
+            position: 'left',
+            label: 'Guide',
+          },
           {
             href: 'https://github.com/inhibitor1217/extended-enum',
             label: 'GitHub',
@@ -63,11 +62,10 @@ const config = {
           {
             title: 'Docs',
             items: [
-              /* TODO - Add footer docs items */
-              // {
-              //   label: 'Tutorial',
-              //   to: '/docs/intro',
-              // },
+              {
+                label: 'Guide',
+                to: '/docs/get-started',
+              },
             ],
           },
           {
