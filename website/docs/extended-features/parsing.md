@@ -16,7 +16,7 @@ enum _LogLevel {
   Warn = 'WARN',
   Error = 'ERROR',
 }
-class LogLevel extends extend<typeof _LogLevel, LogLevel>(LogLevel) {}
+class LogLevel extends extend<typeof _LogLevel, _LogLevel>(_LogLevel) {}
 
 // USAGE
 const level0 = LogLevel.from('INFO');                // LogLevel.Info

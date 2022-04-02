@@ -30,7 +30,7 @@ type T = typeof Fruit.Apple & typeof Fruit.Orange; // never
 
 ## Reverse mapping
 
-Native TypeScript enums supports **reverse mapping**, which allows to retrieve keys back from the enum values.
+Native TypeScript enums support **reverse mapping**, which allows us to retrieve keys back from the values.
 
 ```ts
 enum _Fruit { Apple, Orange, Pear, Strawberry }
@@ -39,7 +39,7 @@ console.log(_Fruit[_Fruit.Apple]);  // "Apple"
 console.log(_Fruit[_Fruit.Orange]); // "Orange"
 ```
 
-`extend`ed enum values are **objects**, so it is not an indexable type in JavaScript. Instead, it provides `keyOf` API to support reverse mapping.
+`extend`ed enum value is an **objects**, so it is not an indexable type in JavaScript. Instead, it provides `keyOf` API to support reverse mapping.
 
 ```ts
 console.log(Fruit.keyOf(Fruit.Apple));  // "Apple"
@@ -62,7 +62,7 @@ const user = {
   favoriteFruits: [Fruit.Apple, Fruit.Strawberry],
 }
 
-console.log(JSON.stringify(user)); // {"id":"42","favoriteFruits":[0,3]}
+console.log(JSON.stringify(user)); // { "id": "42", "favoriteFruits": [0, 3] }
 ```
 
 ### `keyOf`

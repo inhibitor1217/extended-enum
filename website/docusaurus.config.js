@@ -7,11 +7,12 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'extended-enum',
-  tagline: 'Grant object-oriented powers to TypeScript enums',
+  tagline: 'Grant handy utilities and object-oriented powers to TypeScript enums',
   url: 'https://inhibitor1217.github.io',
   baseUrl: '/extended-enum/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
+  trailingSlash: true,
   favicon: 'img/favicon.ico',
   organizationName: 'inhibitor1217',
   projectName: 'extended-enum',

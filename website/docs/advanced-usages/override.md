@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Motivation
 
-Extended features - `is`, `from`, etc - determines the equality of the primitive and the enum by its original definition.
+Extended features - `is`, `from`, etc - determine the equality of the primitive and the enum by its native definition. In the following example, values in enum `_Priority` are defined by the corresponding number primitives, `300`, `200`, and `100`.
 
 ```ts
 enum _Priority { High = 300, Medium = 200, Low = 100 }
@@ -16,10 +16,10 @@ Priority.High.is(300);   // true
 Priority.Medium.is(200); // true
 ```
 
-However, in some cases, you would want other values to be regarded as a valid primitive for this enum. In the above case, `Priority` enum is defined using number primitives, `100`, `200`, `300`.
+However, in some cases, you would want other values to be regarded as a valid primitive for this enum.
 
-- What if the priority should be defined using number ranges, `[0, 100], [101, 200], [201, 300]`?
-- What if string values `"low", "medium", "high"` should be parsed into `Priority` enum?
+- What if the priority should be defined by ranges, `[0, 100], [101, 200], [201, 300]`?
+- What if string values `"low", "medium", "high"` should be also parsed to `Priority` enum?
 
 ```ts
 Priority.High.is(250); // expected: true
@@ -34,17 +34,17 @@ Priority.High
   });                  // expected: false
 ```
 
-To meet the additional needs for overriding the default behavior, `extend`ed enum exposes an interface `eq`.
+To meet the additional needs for overriding the default behavior, `extend`ed enums expose an interface `eq`.
 
 ## `eq`
 
 `eq` determines the equality of the given primitive value and the defined value. It governs the comparison performed in `extend`ed enums, such as in `from`, `is`, or `match`.
 
-**Using this method directly in useases is not recommended.** `is` or `isNot` are perhaps the methods you are looking for.
+**Using this method directly in usecases is not recommended.** `is` or `isNot` are perhaps the methods you are looking for.
 
-In default behavior, `eq` does the reference equality comparison (`===`) Overriding this method will alter the core behavior, granting new possibilities.(See the example.)
+In default behavior, `eq` does the reference equality comparison (`===`). Overriding this method will alter the core behavior, granting new possibilities. (See the example.)
 
-In the following example, the case-insenstivie comparison overrides the default comparison. Observe how the behavior of `from`, `is`, or `match` differs from the original behavior.
+In the following example, the case-insensitive comparison overrides the default comparison, as specified at overrided method `eq`. Observe how the behaviors of `from`, `is`, or `match` differ from the original behaviors.
 
 ```ts
 enum _Level { Low = 'LOW', High = 'HIGH' }

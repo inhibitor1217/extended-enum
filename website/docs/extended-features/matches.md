@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Equality - `is`
 
-To determine equality between enum and primitives, keys, or other enums, use **`is`**,
+To determine equality between an enum and a primitive, a key, or another enum, use **`is`**,
 
 ```ts
 enum _Size { small = 'S', medium = 'M', large = 'L' }
