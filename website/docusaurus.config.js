@@ -8,8 +8,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'extended-enum',
   tagline: 'Grant object-oriented powers to TypeScript enums',
-  url: 'https://inhibitor1217.github.io/extended-enum',
-  baseUrl: '/',
+  url: 'https://inhibitor1217.github.io',
+  baseUrl: '/extended-enum/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
