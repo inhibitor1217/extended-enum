@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Get Started
 
-## Installtion
+## Installation
 
 Install the package via `npm` or `yarn`.
 
@@ -48,7 +48,7 @@ Now, you are good to go!
 
 ## What should I do next?
 
-If your existing code was using native TypeScript enums, simply `extend`ing them should require no or very little migration. You can use native TypeScript enum features as it is.
+If your existing code was using native TypeScript enums, simply `extend`ing them should require no or very little migration. You may use native features from TypeScript enums as they are.
 
 `extend`ed enums do not break the original enum, so your project could choose to migrate into `extend`ed enums gradually.
 

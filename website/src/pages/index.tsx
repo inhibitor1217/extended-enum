@@ -28,7 +28,7 @@ function HomepageHeader() {
 export default function Home(): JSX.Element {
   return (
     <Layout
-      description="Grant object-oriented powers to TypeScript enums">
+      description="Grant handy utilities and object-oriented powers to TypeScript enums">
       <HomepageHeader />
       <main className="container margin-vert--xl">
         <section className="row">
@@ -43,7 +43,7 @@ export default function Home(): JSX.Element {
 enum _Priority { Critical = 100, High = 50, Medium = 30, Low = 10 }
 
 // now, your native enum is extended!
-class Priority extends extend<typeof _Priority, Priority>(Priority) {}`}
+class Priority extends extend<typeof _Priority, _Priority>(_Priority) {}`}
             </CodeBlock>
           </div>
           <div className="col col--2" />
@@ -55,7 +55,7 @@ class Priority extends extend<typeof _Priority, Priority>(Priority) {}`}
               Out-of-the-box utilities
             </h2>
             <p>
-              <b>Parsing, iterating and pattern matching</b> utilties are available from the extended enum class.<br/>
+              <b>Parsing, iterating and pattern matching</b> utilties are available from the extended enum instance.<br/>
               <br/>
               All of the utilities work seamlessly with TypeScript, so don't worry!
             </p>
@@ -84,7 +84,7 @@ const isHigh = priority.is(Priority.High);
             <CodeBlock language="ts">
               {`interface IPriority { shouldIgnore(): boolean }
 
-class Priority extends <typeof _Priority, Priority, IPriority>(Priority) {
+class Priority extends <typeof _Priority, _Priority, IPriority>(_Priority) {
 
   // define methods in addition to extended enum class
   shouldIgnore() {

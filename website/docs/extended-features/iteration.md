@@ -17,8 +17,6 @@ enum _Fruit {
 }
 class Fruit extends extend<typeof _Fruit, _Fruit>(_Fruit) {}
 
-// USAGE
-
 /**
  * Prints:
  * "apple"
