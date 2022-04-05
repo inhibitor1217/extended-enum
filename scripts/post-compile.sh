@@ -11,3 +11,5 @@ cat >dist/mjs/package.json <<!EOF
     "type": "module"
 }
 !EOF
+
+yarn generate:esm-extensions
