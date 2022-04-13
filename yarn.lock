@@ -1027,10 +1027,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fxts/core@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@fxts/core/-/core-0.5.0.tgz#9a820fd42054e6438f690e441afe31502ae66301"
-  integrity sha512-iWI5c+MHjPI3RdGMw5WwxrWHJaALkauPQynTrGC8qBGtb7OxyRxvSUzD71LP/jtLQ+12kl7pj1DBPkCG+tVYEg==
+"@fxts/core@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@fxts/core/-/core-0.6.0.tgz#efc0c85b98a17aa20e08f3e0713d4e49b4dc4257"
+  integrity sha512-VsdYd91afGHhykz4rb1C0czLWGcyIzvYGQZQLOTMW4ywGiQYp1M+63yyGdICDONkSANJC8SeV8M4mdExBbz0oQ==
   dependencies:
     tslib "^2.3.1"
 
