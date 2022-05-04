@@ -46,7 +46,7 @@
     "eslint-plugin-import": "^2.25.2",
     "glob": "^7.2.0",
     "husky": ">=6",
-    "jest": "^27.4.2",
+    "jest": "^28.0.3",
     "lint-staged": ">=10",
     "semantic-release": "^19.0.2",
     "ts-node": "^10.4.0",
