@@ -42,7 +42,7 @@
     "chalk": "^5.0.1",
     "eslint": "^8.2.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-plugin-import": "^2.25.2",
     "glob": "^7.2.0",
     "husky": ">=6",
