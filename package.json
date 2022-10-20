@@ -64,7 +64,7 @@
     "src/*.{js,ts}": "eslint --cache"
   },
   "dependencies": {
-    "@fxts/core": "^0.6.0"
+    "@fxts/core": "^0.10.1"
   },
   "peerDependencies": {
     "typescript": "^4.1.2"
